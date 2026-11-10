@@ -1,11 +1,31 @@
+COMPILER=gcc
+
+DEBUG_OUT=mtg-card-search-debug
+RELEASE_OUT=mtg-card-search
+
+SOURCE_FILES=src/main.c
+DEPENDENCY_SOURCE_FILES=src/dependencies/sqlite3.c src/dependencies/libavif.a
+SYSTEM_LIBS=-lSDL2_ttf -lSDL2_image -lSDL2 -lm -lyuv -ldav1d
+INCLUDES=-I/usr/include/SDL2
+
+DEBUG_MEM_FLAGS=-fsanitize=address
+DEBUG_FLAGS=-g
+RELEASE_FLAGS=-Ofast
+WARN_FLAGS=-Wall -Wextra -Werror -pedantic -fsyntax-only
+
+STD_C=-std=c23
+
 default:
-	gcc -o mtg-card-search-debug src/main.c -fsanitize=address -g -I/usr/include/SDL2 -lSDL2_ttf -lSDL2_image -lSDL2 -lm
+	$(COMPILER) $(STD_C) $(DEBUG_FLAGS) -o $(DEBUG_OUT) $(SOURCE_FILES) $(DEPENDENCY_SOURCE_FILES) $(INCLUDES) $(SYSTEM_LIBS)
+
+warn:
+	$(COMPILER) $(STD_C) $(WARN_FLAGS) $(DEBUG_FLAGS) -o $(DEBUG_OUT) $(SOURCE_FILES) $(DEPENDENCY_SOURCE_FILES) $(INCLUDES) $(SYSTEM_LIBS)
 
 release:
-	gcc -Ofast -o mtg-card-search src/main.c -I/usr/include/SDL2 -lSDL2_ttf -lSDL2_image -lSDL2 -lm
+	$(COMPILER) $(STD_C) $(RELEASE_FLAGS) -o $(RELEASE_OUT) $(SOURCE_FILES) $(DEPENDENCY_SOURCE_FILES) $(INCLUDES) $(SYSTEM_LIBS)
 
 run:
-	./mtg-card-search-debug
+	./$(DEBUG_OUT)
 
 run-release:
-	./mtg-card-search
+	./$(RELEASE_OUT)

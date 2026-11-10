@@ -3,3 +3,4 @@ resources
 scryfall
 mtg-card-search
 mtg-card-search-debug
+.clang-format
