@@ -4,7 +4,7 @@
 #define CLAY_IMPLEMENTATION
 
 #include "dependencies/clay.h"
-#include "dependencies/clay_renderer_SDL2.c"
+#include "clay_renderer_SDL2.c"
 #include "sqlite3.h"
 
 #include <SDL2/SDL.h>

@@ -4,3 +4,5 @@ scryfall
 mtg-card-search
 mtg-card-search-debug
 .clang-format
+src/dependencies/*
+!src/dependencies/.gitkeep
