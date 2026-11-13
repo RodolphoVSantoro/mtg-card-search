@@ -86,7 +86,7 @@ Clay_RenderCommandArray ClayVideoDemo_CreateLayout(ClayVideoDemo_Data *data) {
 
 	Clay_Color contentBackgroundColor = {15, 15, 40, 255};
 	Clay_Color outerContentColor = {43, 41, 51, 128};
-	Clay_Color borderColor = { 80, 40, 40, 255 };
+	Clay_Color borderColor = {80, 40, 40, 255};
 
 	CLAY(CLAY_ID("OuterContainer"),
 		 {.backgroundColor = outerContentColor,
@@ -122,23 +122,18 @@ Clay_RenderCommandArray ClayVideoDemo_CreateLayout(ClayVideoDemo_Data *data) {
 
 			int totalRows = (totalItems + itemsPerRow - 1) / itemsPerRow;
 			CLAY(CLAY_ID("MainContent"),
-				 {
-				  .backgroundColor = borderColor,
-				  .layout =
-					  {.sizing = layoutExpand,
-					   .layoutDirection = CLAY_TOP_TO_BOTTOM,
-					   .padding = CLAY_PADDING_ALL(16),
-					   .childGap = gap},
-				  .clip = {
-					  .vertical = true,
-					  .childOffset = Clay_GetScrollOffset()
-				  }}) {
+				 {.backgroundColor = borderColor,
+				  .layout = {.sizing = layoutExpand,
+							 .layoutDirection = CLAY_TOP_TO_BOTTOM,
+							 .padding = CLAY_PADDING_ALL(16),
+							 .childGap = gap},
+				  .clip = {.vertical = true,
+						   .childOffset = Clay_GetScrollOffset()}}) {
 
 				for (int row = 0; row < totalRows; row++) {
 					CLAY(CLAY_IDI("Row", row),
-						 {
-						 	.backgroundColor = borderColor,
-						 	.layout = {
+						 {.backgroundColor = borderColor,
+						  .layout = {
 							  .layoutDirection = CLAY_LEFT_TO_RIGHT,
 							  .childGap = gap,
 							  .sizing = {.width = CLAY_SIZING_GROW(0),

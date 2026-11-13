@@ -4,21 +4,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-const char* card_face_as_str(CardFace cardFace) {
-	if(cardFace == CARD_FACE_FRONT){
+const char *card_face_as_str(CardFace cardFace) {
+	if (cardFace == CARD_FACE_FRONT) {
 		return CARD_FACE_FRONT_STR;
 	}
-	if(cardFace == CARD_FACE_BACK) {
+	if (cardFace == CARD_FACE_BACK) {
 		return CARD_FACE_BACK_STR;
 	}
 	return CARD_FACE_UNKNOWN_STR;
 }
 
 CardFace card_face_from_cstring(const char *cardFaceStr) {
-	if(strncmp("front", cardFaceStr, 5) == 0) {
+	if (strncmp("front", cardFaceStr, 5) == 0) {
 		return CARD_FACE_FRONT;
 	}
-	if(strncmp("back", cardFaceStr, 4) == 0) {
+	if (strncmp("back", cardFaceStr, 4) == 0) {
 		return CARD_FACE_BACK;
 	}
 	return CARD_FACE_UNKNOWN;
@@ -33,7 +33,7 @@ bool card_face_validate(CardFace face) {
 
 CardImages card_images_init(String cardId) {
 	String ownedId = string_init();
-	string_copy(&ownedId, cardId);
+	int result = string_copy(&ownedId, cardId);
 	return (CardImages){
 		.cardId = ownedId,
 		.faces = {NULL, NULL},
@@ -51,25 +51,28 @@ int card_images_find_by_id(CardImagesVec vec, String id) {
 	return CARD_NOT_FOUND;
 }
 
-int card_images_vec_push(CardImagesVec *vec, SDL_Texture *texture, String id,
-						 CardFace face) {
+void card_images_vec_push(CardImagesVec *vec, SDL_Texture *texture, String id,
+						  CardFace face) {
 	if (!card_face_validate(face)) {
 		fprintf(stderr, "invalid card face in image vec push %d\n", face);
-		return 1;
+		exit(1);
 	}
 	if (vec->size == vec->capacity) {
 		vec->capacity = (vec->capacity + 1) * 2;
 		vec->cardsImages = realloc_raw_array(vec->cardsImages, vec->capacity);
 	}
 	if (vec->cardsImages == NULL) {
-		fprintf(stderr, "failed to realloc image vec to capacity %d\n", vec->capacity);
-		return 1;
+		fprintf(stderr, "failed to realloc image vec to capacity %d\n",
+				vec->capacity);
+		exit(1);
 	}
 	int position = card_images_find_by_id(*vec, id);
 	if (position != CARD_NOT_FOUND) {
 		if (vec->cardsImages[position].faces[face] != NULL) {
-			fprintf(stderr, "trying to ovewrite sdl texture for id %s, face: %d\n", string_as_cstring(id), face);
-			return 1;
+			fprintf(stderr,
+					"trying to ovewrite sdl texture for id %s, face: %d\n",
+					string_as_cstring(id), face);
+			exit(1);
 		}
 		vec->cardsImages[position].faces[face] = texture;
 	} else {
@@ -78,22 +81,21 @@ int card_images_vec_push(CardImagesVec *vec, SDL_Texture *texture, String id,
 		vec->cardsImages[vec->size] = cardImages;
 		vec->size++;
 	}
-	return 0;
 }
 
 void card_images_vec_free(CardImagesVec *vec) {
 	for (int i = 0; i < vec->size; i++) {
 		if (vec->cardsImages->faces[CARD_FACE_FRONT] != NULL) {
-			SDL_DestroyTexture(vec->cardsImages->faces[CARD_FACE_FRONT]);
-			vec->cardsImages->faces[CARD_FACE_FRONT] = NULL;
+			SDL_DestroyTexture(vec->cardsImages[i].faces[CARD_FACE_FRONT]);
+			vec->cardsImages[i].faces[CARD_FACE_FRONT] = NULL;
 		}
 		if (vec->cardsImages->faces[CARD_FACE_BACK] != NULL) {
-			SDL_DestroyTexture(vec->cardsImages->faces[CARD_FACE_BACK]);
-			vec->cardsImages->faces[CARD_FACE_BACK] = NULL;
+			SDL_DestroyTexture(vec->cardsImages[i].faces[CARD_FACE_BACK]);
+			vec->cardsImages[i].faces[CARD_FACE_BACK] = NULL;
 		}
-		string_free(&vec->cardsImages->cardId);
+		string_free(&vec->cardsImages[i].cardId);
 	}
-	if(vec->cardsImages != NULL) {
+	if (vec->cardsImages != NULL) {
 		free(vec->cardsImages);
 	}
 	vec->cardsImages = NULL;
@@ -104,7 +106,7 @@ CStringVec cstring_vec_init() { return (CStringVec){NULL, 0, 0}; }
 
 char *_cstring_from_str(char *str) {
 	int size = strlen(str);
-	char* cstring = (char*)malloc(sizeof(char) * (size + 1));
+	char *cstring = (char *)malloc(sizeof(char) * (size + 1));
 	strcpy(cstring, str);
 	return cstring;
 }
@@ -160,7 +162,8 @@ int string_copy(String *destination, String source) {
 			realloc_raw_array(destination->characters, destination->capacity);
 	}
 	if (destination->characters == NULL) {
-		return 1;
+		fprintf(stderr, "Failed to realloc string\n");
+		exit(1);
 	}
 	strcpy(destination->characters, source.characters);
 	destination->size = source.size;

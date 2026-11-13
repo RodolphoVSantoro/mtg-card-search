@@ -108,14 +108,9 @@ static SDL_Texture *create_surface_from_avif(SDL_Renderer *renderer,
 	Uint32 bmask = 0x00ff0000;
 	Uint32 amask = 0xff000000;
 #endif
-	SDL_Texture* texture = SDL_CreateTexture(
-	    renderer,
-	    SDL_PIXELFORMAT_ABGR8888,
-	    SDL_TEXTUREACCESS_STATIC,
-	    width,
-	    height
-	);
-
+	SDL_Texture *texture =
+		SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888,
+						  SDL_TEXTUREACCESS_STATIC, width, height);
 
 	SDL_UpdateTexture(texture, NULL, rgbImage.pixels, pitch);
 
@@ -141,6 +136,7 @@ int get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
 	if (error != SQLITE_OK) {
 		fprintf(stderr, "Failed to prepare statement: %s\n",
 				sqlite3_errmsg(imageDb));
+		string_free(&sql);
 		sqlite3_finalize(stmt);
 		return error;
 	}
@@ -157,13 +153,14 @@ int get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
 		if (error != 0) {
 			break;
 		}
-		const void *blob_data = sqlite3_column_blob(stmt, 2);
+		const uint8_t *blob_data = sqlite3_column_blob(stmt, 2);
 		int blob_size = sqlite3_column_bytes(stmt, 2);
-		blob_data_sdl = (uint8_t *)malloc(blob_size * sizeof(uint8_t));
-		blob_size_sdl = blob_size;
-		memcpy(blob_data_sdl, blob_data, blob_size);
+		// blob_data_sdl = (uint8_t *)malloc(blob_size * sizeof(uint8_t));
+		// blob_size_sdl = blob_size;
+		// memcpy(blob_data_sdl, blob_data, blob_size);
 		SDL_Texture *cardImage =
-			create_surface_from_avif(renderer, blob_data_sdl, blob_size_sdl);
+			create_surface_from_avif(renderer, blob_data, blob_size);
+		free(blob_data_sdl);
 		// printf("Card face %s(%d), Card scryfallId: %s | img Size: %d
 		// bytes\n", cardFaceStr, cardFace, cardScryfallIdStr, blob_size);
 		card_images_vec_push(cardImages, cardImage, cardScryfallId, cardFace);
@@ -173,10 +170,12 @@ int get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
 	if (error != 0 && error != SQLITE_DONE) {
 		fprintf(stderr, "Execution error: %s\n", sqlite3_errmsg(imageDb));
 		card_images_vec_free(cardImages);
+		string_free(&sql);
 		sqlite3_finalize(stmt);
 		return error;
 	}
 
+	string_free(&sql);
 	sqlite3_finalize(stmt);
 	return 0;
 }
