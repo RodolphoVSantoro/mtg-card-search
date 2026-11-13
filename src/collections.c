@@ -1,19 +1,31 @@
 #include "collections.h"
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
+const char* card_face_as_str(CardFace cardFace) {
+	if(cardFace == CARD_FACE_FRONT){
+		return CARD_FACE_FRONT_STR;
+	}
+	if(cardFace == CARD_FACE_BACK) {
+		return CARD_FACE_BACK_STR;
+	}
+	return CARD_FACE_UNKNOWN_STR;
+}
+
 CardFace card_face_from_cstring(const char *cardFaceStr) {
-	if(strncmp("front", cardFaceStr, 5)) {
+	if(strncmp("front", cardFaceStr, 5) == 0) {
 		return CARD_FACE_FRONT;
 	}
-	if(strncmp("back", cardFaceStr, 4)) {
+	if(strncmp("back", cardFaceStr, 4) == 0) {
 		return CARD_FACE_BACK;
 	}
 	return CARD_FACE_UNKNOWN;
 }
 
 bool card_face_validate(CardFace face) {
-	if (face < 0 || face > 1) {
+	if (face != CARD_FACE_FRONT && face != CARD_FACE_BACK) {
 		return false;
 	}
 	return true;
@@ -42,6 +54,7 @@ int card_images_find_by_id(CardImagesVec vec, String id) {
 int card_images_vec_push(CardImagesVec *vec, SDL_Surface *surface, String id,
 						 CardFace face) {
 	if (!card_face_validate(face)) {
+		fprintf(stderr, "invalid card face in image vec push %d\n", face);
 		return 1;
 	}
 	if (vec->size == vec->capacity) {
@@ -49,12 +62,13 @@ int card_images_vec_push(CardImagesVec *vec, SDL_Surface *surface, String id,
 		vec->cardsImages = realloc_raw_array(vec->cardsImages, vec->capacity);
 	}
 	if (vec->cardsImages == NULL) {
+		fprintf(stderr, "failed to realloc image vec to capacity %d\n", vec->capacity);
 		return 1;
 	}
 	int position = card_images_find_by_id(*vec, id);
 	if (position != CARD_NOT_FOUND) {
 		if (vec->cardsImages[position].faces[face] != NULL) {
-			printf("trying to ovewrite sdl surface");
+			fprintf(stderr, "trying to ovewrite sdl surface for id %s, face: %d\n", string_as_cstring(id), face);
 			return 1;
 		}
 		vec->cardsImages[position].faces[face] = surface;
@@ -62,8 +76,8 @@ int card_images_vec_push(CardImagesVec *vec, SDL_Surface *surface, String id,
 		CardImages cardImages = card_images_init(id);
 		cardImages.faces[face] = surface;
 		vec->cardsImages[vec->size] = cardImages;
+		vec->size++;
 	}
-	vec->size++;
 	return 0;
 }
 
@@ -79,12 +93,21 @@ void card_images_vec_free(CardImagesVec *vec) {
 		}
 		string_free(&vec->cardsImages->cardId);
 	}
-	free(vec->cardsImages);
+	if(vec->cardsImages != NULL) {
+		free(vec->cardsImages);
+	}
 	vec->cardsImages = NULL;
 	vec->size = vec->capacity = 0;
 }
 
 CStringVec cstring_vec_init() { return (CStringVec){NULL, 0, 0}; }
+
+char *_cstring_from_str(char *str) {
+	int size = strlen(str);
+	char* cstring = (char*)malloc(sizeof(char) * (size + 1));
+	strcpy(cstring, str);
+	return cstring;
+}
 
 int cstring_vec_push(CStringVec *vec, char *string) {
 	if (vec->size == vec->capacity) {

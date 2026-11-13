@@ -37,64 +37,7 @@ static int build_query(String *sql, CStringVec strs) {
 	return 0;
 }
 
-int get_card_blobs_by_id(sqlite3 *imageDb, CardImagesVec *cardImages,
-						 CStringVec strs) {
-	String sql = string_init();
-	int error = build_query(&sql, strs);
-	if (error != 0) {
-		string_free(&sql);
-		return error;
-	}
-
-	sqlite3_stmt *stmt;
-	char *err_msg = NULL;
-	error =
-		sqlite3_prepare_v2(imageDb, string_as_cstring(sql), -1, &stmt, NULL);
-	if (error != SQLITE_OK) {
-		fprintf(stderr, "Failed to prepare statement: %s\n",
-				sqlite3_errmsg(imageDb));
-		sqlite3_finalize(stmt);
-		return error;
-	}
-
-	int blob_size_sdl = 0;
-	uint8_t *blob_data_sdl = NULL;
-	String cardId = string_init();
-	*cardImages = card_images_vec_init();
-	while ((error = sqlite3_step(stmt)) == SQLITE_ROW) {
-		char *cardFaceStr = (char *)sqlite3_column_text(stmt, 0);
-		CardFace cardFace = card_face_from_cstring();
-		char *cardIdStr = (char *)sqlite3_column_text(stmt, 1);
-		error = string_push_cstring(&cardId, cardFaceStr);
-		if (error != 0) {
-			break;
-		}
-		const void *blob_data = sqlite3_column_blob(stmt, 2);
-		int blob_size = sqlite3_column_bytes(stmt, 2);
-		if (blob_data_sdl == NULL) {
-			blob_data_sdl = (uint8_t *)malloc(blob_size);
-			blob_size_sdl = blob_size;
-			memcpy(blob_data_sdl, blob_data, blob_size);
-		}
-		SDL_Surface *cardImage =
-			create_surface_from_avif(blob_data_sdl, blob_size_sdl);
-		// printf("File name: %s | img Size: %d bytes\n", fileName, blob_size);
-		card_images_vec_push(cardImages, cardImage, cardId, cardFace);
-		string_reset(&cardId);
-	}
-	string_free(&cardId);
-	if (error != 0 && error != SQLITE_DONE) {
-		fprintf(stderr, "Execution error: %s\n", sqlite3_errmsg(imageDb));
-		card_images_vec_free(cardImages);
-		sqlite3_finalize(stmt);
-		return error;
-	}
-
-	sqlite3_finalize(stmt);
-	return 0;
-}
-
-SDL_Surface *create_surface_from_avif(const uint8_t *avifData,
+static SDL_Surface *create_surface_from_avif(const uint8_t *avifData,
 									  size_t dataSize) {
 	// 1. Initialize AVIF decoder
 	avifDecoder *decoder = avifDecoderCreate();
@@ -187,4 +130,59 @@ SDL_Surface *create_surface_from_avif(const uint8_t *avifData,
 	avifDecoderDestroy(decoder);
 
 	return surface;
+}
+
+int get_card_blobs_by_id(sqlite3 *imageDb, CardImagesVec *cardImages,
+						 CStringVec strs) {
+	String sql = string_init();
+	int error = build_query(&sql, strs);
+	if (error != 0) {
+		string_free(&sql);
+		return error;
+	}
+
+	sqlite3_stmt *stmt;
+	char *err_msg = NULL;
+	error =
+		sqlite3_prepare_v2(imageDb, string_as_cstring(sql), -1, &stmt, NULL);
+	if (error != SQLITE_OK) {
+		fprintf(stderr, "Failed to prepare statement: %s\n",
+				sqlite3_errmsg(imageDb));
+		sqlite3_finalize(stmt);
+		return error;
+	}
+
+	int blob_size_sdl = 0;
+	uint8_t *blob_data_sdl = NULL;
+	String cardScryfallId = string_init();
+	*cardImages = card_images_vec_init();
+	while ((error = sqlite3_step(stmt)) == SQLITE_ROW) {
+		char *cardFaceStr = (char *)sqlite3_column_text(stmt, 0);
+		CardFace cardFace = card_face_from_cstring(cardFaceStr);
+		char *cardScryfallIdStr = (char *)sqlite3_column_text(stmt, 1);
+		error = string_push_cstring(&cardScryfallId, cardScryfallIdStr);
+		if (error != 0) {
+			break;
+		}
+		const void *blob_data = sqlite3_column_blob(stmt, 2);
+		int blob_size = sqlite3_column_bytes(stmt, 2);
+		blob_data_sdl = (uint8_t *)malloc(blob_size * sizeof(uint8_t));
+		blob_size_sdl = blob_size;
+		memcpy(blob_data_sdl, blob_data, blob_size);
+		SDL_Surface *cardImage =
+			create_surface_from_avif(blob_data_sdl, blob_size_sdl);
+		// printf("Card face %s(%d), Card scryfallId: %s | img Size: %d bytes\n", cardFaceStr, cardFace, cardScryfallIdStr, blob_size);
+		card_images_vec_push(cardImages, cardImage, cardScryfallId, cardFace);
+		string_reset(&cardScryfallId);
+	}
+	string_free(&cardScryfallId);
+	if (error != 0 && error != SQLITE_DONE) {
+		fprintf(stderr, "Execution error: %s\n", sqlite3_errmsg(imageDb));
+		card_images_vec_free(cardImages);
+		sqlite3_finalize(stmt);
+		return error;
+	}
+
+	sqlite3_finalize(stmt);
+	return 0;
 }

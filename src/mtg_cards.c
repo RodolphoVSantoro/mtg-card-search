@@ -3,9 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "sqlite3.h"
-#include "mtg_filter.h"
-
-#include "collections.h"
+#include "card_filter.h"
 
 int get_cards(sqlite3 *imageDb) {
 	int error;

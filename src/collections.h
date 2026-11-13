@@ -27,6 +27,11 @@ typedef struct {
 	int capacity;
 } String;
 
+
+static const char *CARD_FACE_FRONT_STR = "front";
+static const char *CARD_FACE_BACK_STR = "back";
+static const char *CARD_FACE_UNKNOWN_STR = "unknown";
+
 typedef enum {
 	CARD_FACE_UNKNOWN=-1,
 	CARD_FACE_FRONT=0,
@@ -45,6 +50,9 @@ typedef struct {
 	int capacity;
 } CardImagesVec;
 
+#define cstring_from_str(str) _cstring_from_str("" str "")
+
+const char* card_face_as_str(CardFace cardFace);
 CardFace card_face_from_cstring(const char *cardFaceStr);
 CardImages card_images_init(String cardId);
 bool card_face_validate(CardFace face);
@@ -53,6 +61,7 @@ int card_images_vec_push(CardImagesVec *vec, SDL_Surface *surface, String id, Ca
 int card_images_find_by_id(CardImagesVec vec, String id);
 void card_images_vec_free(CardImagesVec *vec);
 CStringVec cstring_vec_init();
+char *_cstring_from_str(char *str);
 int cstring_vec_push(CStringVec *vec, char *string);
 void cstring_vec_free(CStringVec *vec);
 String string_init();
