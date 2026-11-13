@@ -44,7 +44,6 @@ typedef struct {
 } ClayVideoDemo_Arena;
 
 typedef struct {
-	int32_t selectedDocumentIndex;
 	float yOffset;
 	ClayVideoDemo_Arena frameArena;
 	CardImagesVec *cardImages;
@@ -70,18 +69,6 @@ void HandleSidebarInteraction(Clay_ElementId elementId,
 }
 
 ClayVideoDemo_Data ClayVideoDemo_Initialize(CardImagesVec *cardImages) {
-	documents.documents[0] = (Document){.title = CLAY_STRING("Squirrels"),
-										.contents = CLAY_STRING("")};
-	documents.documents[1] = (Document){.title = CLAY_STRING("Lorem Ipsum"),
-										.contents = CLAY_STRING("")};
-	documents.documents[2] =
-		(Document){.title = CLAY_STRING("Vacuum Instructions"),
-				   .contents = CLAY_STRING("")};
-	documents.documents[3] = (Document){.title = CLAY_STRING("Article 4"),
-										.contents = CLAY_STRING("Article 4")};
-	documents.documents[4] = (Document){.title = CLAY_STRING("Article 5"),
-										.contents = CLAY_STRING("Article 5")};
-
 	ClayVideoDemo_Data data = {
 		.cardImages = cardImages,
 		.frameArena = {.memory = (intptr_t)malloc(1024)}};

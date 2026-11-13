@@ -2,6 +2,7 @@ clay
 resources
 scryfall
 mtg-card-search
+mtg-card-search-dev
 mtg-card-search-debug
 .clang-format
 src/dependencies/*

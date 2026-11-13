@@ -118,8 +118,6 @@ int main(int argc, char *argv[]) {
 		.font = robotoFont,
 	};
 
-	// SDL_Surface *sample_image = CreateSurfaceFromAVIF(blob_data_sdl, blob_size_sdl);
-
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
 
@@ -129,7 +127,7 @@ int main(int argc, char *argv[]) {
 							  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4); // for antialiasing
 
-	bool enableVsync = false;
+	bool enableVsync = true;
 	if (enableVsync) {
 		renderer = SDL_CreateRenderer(
 			window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -153,9 +151,6 @@ int main(int argc, char *argv[]) {
 
 	Clay_SetMeasureTextFunction(SDL2_MeasureText, &fonts);
 
-	// Uint64 NOW = SDL_GetPerformanceCounter();
-	// Uint64 LAST = 0;
-	double deltaTime = 0;
 	cstring_vec_push(&strs, cstring_from_str("f935adbb-d2e3-48d0-b38c-41f3b583fecb"));
 	cstring_vec_push(&strs, cstring_from_str("8d887f3d-f07f-4672-a3a2-acdc42fa98e2"));
 	cstring_vec_push(&strs, cstring_from_str("0817c5fa-acd9-4fed-ab8b-06750a8817b0"));
@@ -187,7 +182,7 @@ int main(int argc, char *argv[]) {
 	cstring_vec_push(&strs, cstring_from_str("eb9dbad5-7df6-4f78-b809-d6043bf15d4b"));
 	// cstring_vec_push(&strs, cstring_from_str("499ae191-80ac-42bf-b49d-db343803bd56"));
 
-	get_card_blobs_by_id(imageDb, &cardImages, strs);
+	get_card_blobs_by_id(renderer, imageDb, &cardImages, strs);
 	ClayVideoDemo_Data demoData = ClayVideoDemo_Initialize(&cardImages);
 
 	cstring_vec_free(&strs);
@@ -204,7 +199,11 @@ int main(int argc, char *argv[]) {
 	// window to different sizes
 	SDL_AddEventWatch(resizeRendering, &userData);
 
+	Uint64 NOW = SDL_GetPerformanceCounter();
 	while (true) {
+		Uint64 LAST = NOW;
+        Uint64 NOW = SDL_GetPerformanceCounter();
+        double deltaTime = (double)((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency() );
 		Uint32 frame_start = SDL_GetTicks();
 		Clay_Vector2 scrollDelta = {};
 		SDL_Event event;

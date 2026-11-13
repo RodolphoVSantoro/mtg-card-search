@@ -51,7 +51,7 @@ int card_images_find_by_id(CardImagesVec vec, String id) {
 	return CARD_NOT_FOUND;
 }
 
-int card_images_vec_push(CardImagesVec *vec, SDL_Surface *surface, String id,
+int card_images_vec_push(CardImagesVec *vec, SDL_Texture *texture, String id,
 						 CardFace face) {
 	if (!card_face_validate(face)) {
 		fprintf(stderr, "invalid card face in image vec push %d\n", face);
@@ -68,13 +68,13 @@ int card_images_vec_push(CardImagesVec *vec, SDL_Surface *surface, String id,
 	int position = card_images_find_by_id(*vec, id);
 	if (position != CARD_NOT_FOUND) {
 		if (vec->cardsImages[position].faces[face] != NULL) {
-			fprintf(stderr, "trying to ovewrite sdl surface for id %s, face: %d\n", string_as_cstring(id), face);
+			fprintf(stderr, "trying to ovewrite sdl texture for id %s, face: %d\n", string_as_cstring(id), face);
 			return 1;
 		}
-		vec->cardsImages[position].faces[face] = surface;
+		vec->cardsImages[position].faces[face] = texture;
 	} else {
 		CardImages cardImages = card_images_init(id);
-		cardImages.faces[face] = surface;
+		cardImages.faces[face] = texture;
 		vec->cardsImages[vec->size] = cardImages;
 		vec->size++;
 	}
@@ -84,11 +84,11 @@ int card_images_vec_push(CardImagesVec *vec, SDL_Surface *surface, String id,
 void card_images_vec_free(CardImagesVec *vec) {
 	for (int i = 0; i < vec->size; i++) {
 		if (vec->cardsImages->faces[CARD_FACE_FRONT] != NULL) {
-			SDL_FreeSurface(vec->cardsImages->faces[CARD_FACE_FRONT]);
+			SDL_DestroyTexture(vec->cardsImages->faces[CARD_FACE_FRONT]);
 			vec->cardsImages->faces[CARD_FACE_FRONT] = NULL;
 		}
 		if (vec->cardsImages->faces[CARD_FACE_BACK] != NULL) {
-			SDL_FreeSurface(vec->cardsImages->faces[CARD_FACE_BACK]);
+			SDL_DestroyTexture(vec->cardsImages->faces[CARD_FACE_BACK]);
 			vec->cardsImages->faces[CARD_FACE_BACK] = NULL;
 		}
 		string_free(&vec->cardsImages->cardId);

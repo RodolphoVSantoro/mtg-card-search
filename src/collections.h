@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL2/SDL_render.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
@@ -40,7 +41,7 @@ typedef enum {
 
 typedef struct {
 	// one for each card face, defined on the above enum
-	SDL_Surface *faces[2];
+	SDL_Texture *faces[2];
 	String cardId;
 }CardImages;
 
@@ -57,7 +58,7 @@ CardFace card_face_from_cstring(const char *cardFaceStr);
 CardImages card_images_init(String cardId);
 bool card_face_validate(CardFace face);
 CardImagesVec card_images_vec_init();
-int card_images_vec_push(CardImagesVec *vec, SDL_Surface *surface, String id, CardFace face);
+int card_images_vec_push(CardImagesVec *vec, SDL_Texture *surface, String id, CardFace face);
 int card_images_find_by_id(CardImagesVec vec, String id);
 void card_images_vec_free(CardImagesVec *vec);
 CStringVec cstring_vec_init();

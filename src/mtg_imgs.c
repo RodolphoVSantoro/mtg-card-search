@@ -6,6 +6,7 @@
 
 #include <SDL2/SDL.h>
 
+#include <SDL2/SDL_render.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -37,8 +38,9 @@ static int build_query(String *sql, CStringVec strs) {
 	return 0;
 }
 
-static SDL_Surface *create_surface_from_avif(const uint8_t *avifData,
-									  size_t dataSize) {
+static SDL_Texture *create_surface_from_avif(SDL_Renderer *renderer,
+											 const uint8_t *avifData,
+											 size_t dataSize) {
 	// 1. Initialize AVIF decoder
 	avifDecoder *decoder = avifDecoderCreate();
 	if (!decoder) {
@@ -106,34 +108,25 @@ static SDL_Surface *create_surface_from_avif(const uint8_t *avifData,
 	Uint32 bmask = 0x00ff0000;
 	Uint32 amask = 0xff000000;
 #endif
-	SDL_Surface *surface =
-		SDL_CreateRGBSurfaceFrom(rgbImage.pixels, width, height,
-								 32,	// bits per pixel
-								 pitch, // pitch (bytes per row)
-								 rmask, gmask, bmask, amask);
+	SDL_Texture* texture = SDL_CreateTexture(
+	    renderer,
+	    SDL_PIXELFORMAT_ABGR8888,
+	    SDL_TEXTUREACCESS_STATIC,
+	    width,
+	    height
+	);
 
-	if (!surface) {
-		avifRGBImageFreePixels(&rgbImage);
-		avifDecoderDestroy(decoder);
-		return NULL;
-	}
 
-	// Note: SDL_CreateRGBSurfaceFrom does NOT copy the pixel data; it creates a
-	// view. If you want to free the libavif buffer immediately, you must
-	// duplicate the surface: SDL_Surface* optimizedSurface =
-	// SDL_ConvertSurface(surface, surface->format, 0);
-	// SDL_FreeSurface(surface);
-	// ... then free avif pixels.
+	SDL_UpdateTexture(texture, NULL, rgbImage.pixels, pitch);
 
-	// Cleanup decoder structures (keep rgbImage.pixels allocated if using
-	// SDL_CreateRGBSurfaceFrom directly)
+	avifRGBImageFreePixels(&rgbImage);
 	avifDecoderDestroy(decoder);
 
-	return surface;
+	return texture;
 }
 
-int get_card_blobs_by_id(sqlite3 *imageDb, CardImagesVec *cardImages,
-						 CStringVec strs) {
+int get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
+						 CardImagesVec *cardImages, CStringVec strs) {
 	String sql = string_init();
 	int error = build_query(&sql, strs);
 	if (error != 0) {
@@ -169,9 +162,10 @@ int get_card_blobs_by_id(sqlite3 *imageDb, CardImagesVec *cardImages,
 		blob_data_sdl = (uint8_t *)malloc(blob_size * sizeof(uint8_t));
 		blob_size_sdl = blob_size;
 		memcpy(blob_data_sdl, blob_data, blob_size);
-		SDL_Surface *cardImage =
-			create_surface_from_avif(blob_data_sdl, blob_size_sdl);
-		// printf("Card face %s(%d), Card scryfallId: %s | img Size: %d bytes\n", cardFaceStr, cardFace, cardScryfallIdStr, blob_size);
+		SDL_Texture *cardImage =
+			create_surface_from_avif(renderer, blob_data_sdl, blob_size_sdl);
+		// printf("Card face %s(%d), Card scryfallId: %s | img Size: %d
+		// bytes\n", cardFaceStr, cardFace, cardScryfallIdStr, blob_size);
 		card_images_vec_push(cardImages, cardImage, cardScryfallId, cardFace);
 		string_reset(&cardScryfallId);
 	}
