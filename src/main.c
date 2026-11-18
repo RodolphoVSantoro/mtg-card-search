@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
 	int returnVal = 0;
 	sqlite3 *imageDb = NULL, *cardDb = NULL;
 
+	// Sqlite init
 	int error = sqlite3_open("./resources/all_cards.db", &cardDb);
 	if (error != SQLITE_OK) {
 		fprintf(stderr, "Cannot open card database: %s(%d)\n",
@@ -42,8 +43,9 @@ int main(int argc, char *argv[]) {
 		returnVal = MAIN_ERROR;
 		goto quit;
 	}
+	// Sqlite initiated
 
-	// SDL + Clay testing
+	// SDL components init
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fprintf(stderr, "Error: could not initialize SDL: %s\n",
 				SDL_GetError());
@@ -77,22 +79,20 @@ int main(int argc, char *argv[]) {
 		.font = robotoFont,
 	};
 
-	SDL_Window *window = NULL;
-	SDL_Renderer *renderer = NULL;
-
 	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl"); // for antialiasing
-	window = SDL_CreateWindow("SDL", SDL_WINDOWPOS_UNDEFINED,
-							  SDL_WINDOWPOS_UNDEFINED, 900, 600,
-							  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+	SDL_Window *window = SDL_CreateWindow(
+		"SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 900, 600,
+		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
+	if (window == NULL) {
+		fprintf(stderr, "Failed to init sdl window\n");
+		returnVal = MAIN_ERROR;
+		goto quit;
+	}
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4); // for antialiasing
 
-	bool enableVsync = true;
-	if (enableVsync) {
-		renderer = SDL_CreateRenderer(
-			window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	} else {
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	}
+	SDL_Renderer *renderer = SDL_CreateRenderer(
+		window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	if (renderer == NULL) {
 		fprintf(stderr, "Failed to init sdl renderer\n");
@@ -101,7 +101,9 @@ int main(int argc, char *argv[]) {
 	}
 	SDL_SetRenderDrawBlendMode(renderer,
 							   SDL_BLENDMODE_BLEND); // for alpha blending
+	// SDL components initiated
 
+	// Clay init
 	uint64_t totalMemorySize = Clay_MinMemorySize();
 	Clay_Arena clayMemory = Clay_CreateArenaWithCapacityAndMemory(
 		totalMemorySize, malloc(totalMemorySize));
@@ -115,6 +117,7 @@ int main(int argc, char *argv[]) {
 
 	Clay_SetMeasureTextFunction(SDL2_MeasureText, &fonts);
 
+	// init card search
 	CardFilterEqual equal = {.key = "manaValue", .value = "3"};
 	CardFilterLike like = {.key = "name", .value = "phoenix"};
 	CardFilter filters[2] = {
@@ -132,10 +135,11 @@ int main(int argc, char *argv[]) {
 	}
 
 	get_card_blobs_by_id(renderer, imageDb, &cardImages, scryfallIds);
-	ClayVideoDemo_Data demoData =
-		ClayVideoDemo_Initialize(&cardImages, &windowHeight, &windowWidth);
+	ClayData demoData =
+		CardSearchInitialize(&cardImages, &windowHeight, &windowWidth);
 
 	cstring_vec_free(&scryfallIds);
+	// end card search
 
 	ResizeRenderData userData = {
 		.window = window,			   // SDL_Window*
@@ -147,10 +151,14 @@ int main(int argc, char *argv[]) {
 	};
 	// add an event watcher that will render the screen while youre dragging the
 	// window to different sizes
-	SDL_AddEventWatch(resizeRendering, &userData);
 
+	// Clay initiated
+
+	// Event loop start
+	SDL_AddEventWatch(resizeRendering, &userData);
 	Uint64 NOW = SDL_GetPerformanceCounter();
 	bool running = true;
+
 	while (running == true) {
 		Uint64 LAST = NOW;
 		Uint64 NOW = SDL_GetPerformanceCounter();
@@ -206,6 +214,9 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	// Event loop end
+
+	// cleanup
 quit:
 	cstring_vec_free(&scryfallIds);
 	card_images_vec_free(&cardImages);
@@ -229,9 +240,9 @@ quit:
 		TTF_CloseFont(robotoFont);
 		robotoFont = NULL;
 	}
-	free((void *)demoData.frameArena.memory);
 	IMG_Quit();
 	TTF_Quit();
 	SDL_Quit();
+
 	return returnVal;
 }

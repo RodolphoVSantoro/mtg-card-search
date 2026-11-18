@@ -1,10 +1,6 @@
 #include "mtg_card_search_layout.h"
 
 #include <math.h>
-#include <stdlib.h>
-
-Document documentsRaw[5];
-DocumentArray documents = {.length = 5, .documents = documentsRaw};
 
 Clay_Color COLOR_WHITE = {255, 255, 255, 255};
 
@@ -12,58 +8,20 @@ void HandleClayErrors(Clay_ErrorData errorData) {
 	printf("%s", errorData.errorText.chars);
 }
 
-void RenderHeaderButton(Clay_String text) {
-	CLAY_AUTO_ID({.layout = {.padding = {16, 16, 8, 8}},
-				  .backgroundColor = {140, 140, 140, 255},
-				  .cornerRadius = CLAY_CORNER_RADIUS(5)}) {
-		CLAY_TEXT(text, CLAY_TEXT_CONFIG({.fontId = FONT_ID_BODY_16,
-										  .fontSize = 16,
-										  .textColor = {255, 255, 255, 255}}));
-	}
-}
-
-void RenderDropdownMenuItem(Clay_String text) {
-	CLAY_AUTO_ID({.layout = {.padding = CLAY_PADDING_ALL(16)}}) {
-		CLAY_TEXT(text, CLAY_TEXT_CONFIG({.fontId = FONT_ID_BODY_16,
-										  .fontSize = 16,
-										  .textColor = {255, 255, 255, 255}}));
-	}
-}
-
-void HandleSidebarInteraction(Clay_ElementId elementId,
-							  Clay_PointerData pointerData, void *userData) {
-	SidebarClickData *clickData = (SidebarClickData *)userData;
-	// If this button was clicked
-	if (pointerData.state == CLAY_POINTER_DATA_PRESSED_THIS_FRAME) {
-		if (clickData->requestedDocumentIndex >= 0 &&
-			clickData->requestedDocumentIndex < documents.length) {
-			// Select the corresponding document
-			*clickData->selectedDocumentIndex =
-				clickData->requestedDocumentIndex;
-		}
-	}
-}
-
-ClayVideoDemo_Data ClayVideoDemo_Initialize(CardImagesVec *cardImages,
-											int *windowHeight,
-											int *windowWidth) {
-	ClayVideoDemo_Data userData = {
-		.windowHeight = windowHeight,
-		.windowWidth = windowWidth,
-		.cardImages = cardImages,
-		.frameArena = {.memory = (intptr_t)malloc(1024)}};
+ClayData CardSearchInitialize(CardImagesVec *cardImages, int *windowHeight,
+							  int *windowWidth) {
+	ClayData userData = {.windowHeight = windowHeight,
+						 .windowWidth = windowWidth,
+						 .cardImages = cardImages};
 
 	return userData;
 }
 
-int apply_proportion(float size, float proportion) {
+static int apply_proportion(float size, float proportion) {
 	return (int)ceil(size * proportion);
 }
 
-Clay_RenderCommandArray
-ClayVideoDemo_CreateLayout(ClayVideoDemo_Data *userData) {
-	userData->frameArena.offset = 0;
-
+Clay_RenderCommandArray ClayVideoDemo_CreateLayout(ClayData *userData) {
 	// default size w: 1920, h: 1006
 	float widthProportion = ((float)(*(userData->windowWidth))) / 1920.0f;
 	float heightProportion = ((float)(*(userData->windowHeight))) / 1006.0f;
@@ -195,7 +153,7 @@ int resizeRendering(void *userData, SDL_Event *event) {
 		SDL_Window *window = actualData->window;
 		int windowWidth = *(actualData->windowWidth);
 		int windowHeight = *(actualData->windowHeight);
-		ClayVideoDemo_Data demoData = actualData->demoData;
+		ClayData demoData = actualData->demoData;
 		SDL_Renderer *renderer = actualData->renderer;
 		SDL2_Font *fonts = actualData->fonts;
 
