@@ -19,11 +19,11 @@
 
 #define TARGET_FPS 240
 #define FRAME_TARGET_TIME (1000 / TARGET_FPS)
+#define MAIN_ERROR -1
 
 int main(int argc, char *argv[]) {
 	CardImagesVec cardImages = card_images_vec_init();
 	CStringVec scryfallIds = cstring_vec_init();
-	bool sdlInitiated = false, ttfInitiated = false, imgInitiated = false;
 	int returnVal = 0;
 	sqlite3 *imageDb = NULL, *cardDb = NULL;
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 	if (error != SQLITE_OK) {
 		fprintf(stderr, "Cannot open card database: %s(%d)\n",
 				sqlite3_errmsg(cardDb), error);
-		returnVal = 1;
+		returnVal = MAIN_ERROR;
 		goto quit;
 	}
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 	if (error != SQLITE_OK) {
 		fprintf(stderr, "Cannot open image database: %s(%d)\n",
 				sqlite3_errmsg(imageDb), error);
-		returnVal = 1;
+		returnVal = MAIN_ERROR;
 		goto quit;
 	}
 
@@ -47,29 +47,26 @@ int main(int argc, char *argv[]) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fprintf(stderr, "Error: could not initialize SDL: %s\n",
 				SDL_GetError());
-		returnVal = 1;
+		returnVal = MAIN_ERROR;
 		goto quit;
 	}
-	sdlInitiated = true;
 	if (TTF_Init() < 0) {
 		fprintf(stderr, "Error: could not initialize TTF: %s\n",
 				TTF_GetError());
-		returnVal = 1;
+		returnVal = MAIN_ERROR;
 		goto quit;
 	}
-	ttfInitiated = true;
 	if (IMG_Init(IMG_INIT_PNG) < 0) {
 		fprintf(stderr, "Error: could not initialize IMG: %s\n",
 				IMG_GetError());
-		returnVal = 1;
+		returnVal = MAIN_ERROR;
 		goto quit;
 	}
-	imgInitiated = true;
 
 	TTF_Font *robotoFont = TTF_OpenFont("resources/Roboto-Regular.ttf", 16);
 	if (!robotoFont) {
 		fprintf(stderr, "Error: could not load font: %s\n", TTF_GetError());
-		returnVal = 1;
+		returnVal = MAIN_ERROR;
 		goto quit;
 	}
 
@@ -95,6 +92,12 @@ int main(int argc, char *argv[]) {
 			window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	} else {
 		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	}
+
+	if (renderer == NULL) {
+		fprintf(stderr, "Failed to init sdl renderer\n");
+		returnVal = MAIN_ERROR;
+		goto quit;
 	}
 	SDL_SetRenderDrawBlendMode(renderer,
 							   SDL_BLENDMODE_BLEND); // for alpha blending
