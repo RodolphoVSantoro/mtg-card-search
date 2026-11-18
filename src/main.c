@@ -3,18 +3,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "collections.h"
-#include "mtg_cards.h"
-#include "mtg_imgs.h"
-#include "sqlite3.h"
-
 #include "sdl/SDL.h"
 #include "sdl/SDL_image.h"
 #include "sdl/SDL_ttf.h"
 
+#include "sqlite3.h"
+
+#include "collections.h"
+#include "mtg_card_search_layout.h"
+#include "mtg_cards.h"
+#include "mtg_imgs.h"
+
 #define CLAY_IMPLEMENTATION
 #include "clay.h"
-#include "mtg-card-search-layout.h"
 
 #define TARGET_FPS 240
 #define FRAME_TARGET_TIME (1000 / TARGET_FPS)
@@ -150,7 +151,8 @@ int main(int argc, char *argv[]) {
 	SDL_AddEventWatch(resizeRendering, &userData);
 
 	Uint64 NOW = SDL_GetPerformanceCounter();
-	while (true) {
+	bool running = true;
+	while (running == true) {
 		Uint64 LAST = NOW;
 		Uint64 NOW = SDL_GetPerformanceCounter();
 		double deltaTime = (double)((NOW - LAST) * 1000 /
@@ -160,14 +162,19 @@ int main(int argc, char *argv[]) {
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
-			case SDL_QUIT: {
-				goto quit;
-			}
-			case SDL_MOUSEWHEEL: {
+			case SDL_WINDOWEVENT:
+				if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
+					running = false;
+				}
+				break;
+			case SDL_QUIT:
+				running = false;
+				break;
+
+			case SDL_MOUSEWHEEL:
 				scrollDelta.x = event.wheel.x * 10;
 				scrollDelta.y = event.wheel.y * 10;
 				break;
-			}
 			}
 		}
 

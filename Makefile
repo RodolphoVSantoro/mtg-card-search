@@ -4,7 +4,7 @@ DEV_OUT=mtg-card-search-dev
 DEBUG_OUT=mtg-card-search-debug
 RELEASE_OUT=mtg-card-search
 
-SOURCE_FILES=src/main.c src/collections.c src/mtg_cards.c src/mtg_imgs.c
+SOURCE_FILES=src/main.c src/collections.c src/mtg_cards.c src/mtg_imgs.c src/clay_renderer_SDL2.c src/mtg_card_search_layout.c
 DEPENDENCY_SOURCE_FILES=src/dependencies/libraries/sqlite3.c src/dependencies/libraries/libavif.a
 SYSTEM_LIBS=-lSDL2_ttf -lSDL2_image -lSDL2 -lm -lyuv -ldav1d
 INCLUDES=-I./src/dependencies/headers -L./src/dependencies/libraries -Wl,-rpath,./src/dependencies/libraries

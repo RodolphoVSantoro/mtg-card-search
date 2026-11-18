@@ -151,6 +151,39 @@ String string_init() {
 	return (String){terminator, 0, STRING_INITIAL_SIZE};
 }
 
+int string_push_char(String *string, char cChar);
+
+CStringVec split(char *cstring) {
+	CStringVec vec = cstring_vec_init();
+	String str = string_init();
+	for (int i = 0; i < strlen(cstring); i++) {
+		if (cstring[i] != '.') {
+			string_push_char(&str, cstring[i]);
+		} else {
+			String owned = string_init();
+			string_copy(&owned, str);
+			cstring_vec_push(&vec, string_as_cstring(owned));
+			string_reset(&str);
+		}
+	}
+	string_free(&str);
+	return vec;
+}
+
+int string_push_char(String *string, char cChar) {
+	if (1 + string->size >= string->capacity) {
+		string->capacity = (1 + string->size) * 2;
+		string->characters =
+			realloc_raw_array(string->characters, string->capacity);
+		if (string->characters == NULL) {
+			return 1;
+		}
+	}
+	string->characters[string->size] = cChar;
+	string->size++;
+	return 0;
+}
+
 int string_push_cstring(String *string, char *cstring) {
 	int cstringSize = strlen(cstring);
 	if (cstringSize + string->size >= string->capacity) {
