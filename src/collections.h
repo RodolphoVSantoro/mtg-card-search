@@ -69,6 +69,7 @@ int cstring_vec_push(CStringVec *vec, char *string);
 void cstring_vec_free(CStringVec *vec);
 String string_init();
 int string_push_cstring(String *string, char *cstring);
+int string_push_char(String *string, char cChar);
 char *string_as_cstring(String str);
 void string_free(String *vec);
 int string_copy(String *destination, String source);
