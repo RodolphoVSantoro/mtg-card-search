@@ -8,6 +8,10 @@ DocumentArray documents = {.length = 5, .documents = documentsRaw};
 
 Clay_Color COLOR_WHITE = {255, 255, 255, 255};
 
+void HandleClayErrors(Clay_ErrorData errorData) {
+	printf("%s", errorData.errorText.chars);
+}
+
 void RenderHeaderButton(Clay_String text) {
 	CLAY_AUTO_ID({.layout = {.padding = {16, 16, 8, 8}},
 				  .backgroundColor = {140, 140, 140, 255},

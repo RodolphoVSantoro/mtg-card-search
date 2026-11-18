@@ -50,3 +50,4 @@ ClayVideoDemo_Data ClayVideoDemo_Initialize(CardImagesVec *cardImages,
 int resizeRendering(void *userData, SDL_Event *event);
 Clay_RenderCommandArray
 ClayVideoDemo_CreateLayout(ClayVideoDemo_Data *userData);
+void HandleClayErrors(Clay_ErrorData errorData);
