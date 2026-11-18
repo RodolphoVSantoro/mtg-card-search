@@ -4,12 +4,14 @@
 
 Clay_Color COLOR_WHITE = {255, 255, 255, 255};
 
-void HandleClayErrors(Clay_ErrorData errorData) {
+void
+HandleClayErrors(Clay_ErrorData errorData) {
 	printf("%s", errorData.errorText.chars);
 }
 
-ClayData CardSearchInitialize(CardImagesVec *cardImages, int *windowHeight,
-							  int *windowWidth) {
+ClayData
+CardSearchInitialize(CardImagesVec *cardImages, int *windowHeight,
+					 int *windowWidth) {
 	ClayData userData = {.windowHeight = windowHeight,
 						 .windowWidth = windowWidth,
 						 .cardImages = cardImages};
@@ -17,11 +19,13 @@ ClayData CardSearchInitialize(CardImagesVec *cardImages, int *windowHeight,
 	return userData;
 }
 
-static int apply_proportion(float size, float proportion) {
+static int
+apply_proportion(float size, float proportion) {
 	return (int)ceil(size * proportion);
 }
 
-Clay_RenderCommandArray ClayVideoDemo_CreateLayout(ClayData *userData) {
+Clay_RenderCommandArray
+ClayVideoDemo_CreateLayout(ClayData *userData) {
 	// default size w: 1920, h: 1006
 	float widthProportion = ((float)(*(userData->windowWidth))) / 1920.0f;
 	float heightProportion = ((float)(*(userData->windowHeight))) / 1006.0f;
@@ -146,7 +150,8 @@ Clay_RenderCommandArray ClayVideoDemo_CreateLayout(ClayData *userData) {
 	return renderCommands;
 }
 
-int resizeRendering(void *userData, SDL_Event *event) {
+int
+resizeRendering(void *userData, SDL_Event *event) {
 	ResizeRenderData *actualData = userData;
 	if (event->type == SDL_WINDOWEVENT &&
 		event->window.event == SDL_WINDOWEVENT_EXPOSED) {

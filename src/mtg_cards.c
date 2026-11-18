@@ -3,9 +3,11 @@
 
 #include <stdio.h>
 
-static String apply_filter(CardFilter filter);
+static String
+apply_filter(CardFilter filter);
 
-static String generate_query(CardFilter filter) {
+static String
+generate_query(CardFilter filter) {
 	String sql = string_init();
 	int error = string_push_cstring(&sql, SQL_CARD_SELECT_WHERE);
 	if (error != 0) {
@@ -27,7 +29,8 @@ static String generate_query(CardFilter filter) {
 	return sql;
 }
 
-static String apply_and_filter(CardFilterAnd filter) {
+static String
+apply_and_filter(CardFilterAnd filter) {
 	String query = string_init();
 	if (filter.filtersSize <= 0) {
 		return query;
@@ -61,7 +64,8 @@ static String apply_and_filter(CardFilterAnd filter) {
 	return query;
 }
 
-static String apply_or_filter(CardFilterOr filter) {
+static String
+apply_or_filter(CardFilterOr filter) {
 	String query = string_init();
 	if (filter.filtersSize <= 0) {
 		return query;
@@ -93,7 +97,8 @@ static String apply_or_filter(CardFilterOr filter) {
 	return query;
 }
 
-static String apply_not_filter(CardFilterNot filter) {
+static String
+apply_not_filter(CardFilterNot filter) {
 	String query = string_init();
 	int error = string_push_cstring(&query, " not ( ");
 	if (error != 0) {
@@ -115,7 +120,8 @@ static String apply_not_filter(CardFilterNot filter) {
 	return query;
 }
 
-static String apply_equal_filter(CardFilterEqual filter) {
+static String
+apply_equal_filter(CardFilterEqual filter) {
 	String query = string_init();
 	int error = string_push_cstring(&query, filter.key);
 	if (error != 0) {
@@ -140,7 +146,8 @@ static String apply_equal_filter(CardFilterEqual filter) {
 	return query;
 }
 
-static String apply_like_filter(CardFilterLike filter) {
+static String
+apply_like_filter(CardFilterLike filter) {
 	String query = string_init();
 	int error = string_push_cstring(&query, " lower(");
 	if (error != 0) {
@@ -177,7 +184,8 @@ static String apply_like_filter(CardFilterLike filter) {
 	return query;
 }
 
-static String apply_filter(CardFilter filter) {
+static String
+apply_filter(CardFilter filter) {
 	switch (filter.type) {
 	case CARD_FILTER_AND: {
 		CardFilterAnd andFilter = *filter.filter.andFilter;
@@ -205,7 +213,8 @@ static String apply_filter(CardFilter filter) {
 	}
 }
 
-int get_scryfall_ids(sqlite3 *cardDb, CardFilter filter, CStringVec *ids) {
+int
+get_scryfall_ids(sqlite3 *cardDb, CardFilter filter, CStringVec *ids) {
 	String sql = generate_query(filter);
 	printf("%s\n", string_as_cstring(sql));
 	sqlite3_stmt *stmt;

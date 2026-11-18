@@ -2,9 +2,9 @@
 #include <math.h>
 #include <stdio.h>
 
-Clay_Dimensions SDL2_MeasureText(Clay_StringSlice text,
-								 Clay_TextElementConfig *config,
-								 void *userData) {
+Clay_Dimensions
+SDL2_MeasureText(Clay_StringSlice text, Clay_TextElementConfig *config,
+				 void *userData) {
 	SDL2_Font *fonts = (SDL2_Font *)userData;
 
 	TTF_Font *font = fonts[config->fontId].font;
@@ -32,10 +32,9 @@ static int NUM_CIRCLE_SEGMENTS = 16;
 
 // all rendering is performed by a single SDL call, avoiding multiple RenderRect
 // + plumbing choice for circles.
-static void SDL_RenderFillRoundedRect(SDL_Renderer *renderer,
-									  const SDL_FRect rect,
-									  const float cornerRadius,
-									  const Clay_Color _color) {
+static void
+SDL_RenderFillRoundedRect(SDL_Renderer *renderer, const SDL_FRect rect,
+						  const float cornerRadius, const Clay_Color _color) {
 	const SDL_Color color = (SDL_Color){
 		.r = (Uint8)_color.r,
 		.g = (Uint8)_color.g,
@@ -197,10 +196,10 @@ static void SDL_RenderFillRoundedRect(SDL_Renderer *renderer,
 // all rendering is performed by a single SDL call, using twi sets of arcing
 // triangles, inner and outer, that fit together; along with two tringles to
 // fill the end gaps.
-static void SDL_RenderCornerBorder(SDL_Renderer *renderer,
-								   Clay_BoundingBox *boundingBox,
-								   Clay_BorderRenderData *config,
-								   int cornerIndex, Clay_Color _color) {
+static void
+SDL_RenderCornerBorder(SDL_Renderer *renderer, Clay_BoundingBox *boundingBox,
+					   Clay_BorderRenderData *config, int cornerIndex,
+					   Clay_Color _color) {
 	/////////////////////////////////
 	// The arc is constructed of outer triangles and inner triangles (if
 	// needed). First three vertices are first outer triangle's vertices Each
@@ -359,9 +358,9 @@ static void SDL_RenderCornerBorder(SDL_Renderer *renderer,
 
 SDL_Rect currentClippingRectangle;
 
-void Clay_SDL2_Render(SDL_Renderer *renderer,
-					  Clay_RenderCommandArray renderCommands,
-					  SDL2_Font *fonts) {
+void
+Clay_SDL2_Render(SDL_Renderer *renderer, Clay_RenderCommandArray renderCommands,
+				 SDL2_Font *fonts) {
 	for (uint32_t i = 0; i < renderCommands.length; i++) {
 		Clay_RenderCommand *renderCommand =
 			Clay_RenderCommandArray_Get(&renderCommands, i);

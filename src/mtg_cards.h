@@ -69,4 +69,5 @@ struct CardFilterLike {
 	char *value;
 };
 
-int get_scryfall_ids(sqlite3 *cardDb, CardFilter filter, CStringVec *ids);
+int
+get_scryfall_ids(sqlite3 *cardDb, CardFilter filter, CStringVec *ids);

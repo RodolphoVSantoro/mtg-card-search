@@ -23,8 +23,12 @@ struct ResizeRenderData_ {
 };
 typedef struct ResizeRenderData_ ResizeRenderData;
 
-ClayData CardSearchInitialize(CardImagesVec *cardImages, int *windowHeight,
-							  int *windowWidth);
-int resizeRendering(void *userData, SDL_Event *event);
-Clay_RenderCommandArray ClayVideoDemo_CreateLayout(ClayData *userData);
-void HandleClayErrors(Clay_ErrorData errorData);
+ClayData
+CardSearchInitialize(CardImagesVec *cardImages, int *windowHeight,
+					 int *windowWidth);
+int
+resizeRendering(void *userData, SDL_Event *event);
+Clay_RenderCommandArray
+ClayVideoDemo_CreateLayout(ClayData *userData);
+void
+HandleClayErrors(Clay_ErrorData errorData);

@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-const char *card_face_as_str(CardFace cardFace) {
+const char *
+card_face_as_str(CardFace cardFace) {
 	if (cardFace == CARD_FACE_FRONT) {
 		return CARD_FACE_FRONT_STR;
 	}
@@ -15,7 +16,8 @@ const char *card_face_as_str(CardFace cardFace) {
 	return CARD_FACE_UNKNOWN_STR;
 }
 
-CardFace card_face_from_cstring(const char *cardFaceStr) {
+CardFace
+card_face_from_cstring(const char *cardFaceStr) {
 	if (strncmp("front", cardFaceStr, 5) == 0) {
 		return CARD_FACE_FRONT;
 	}
@@ -25,14 +27,16 @@ CardFace card_face_from_cstring(const char *cardFaceStr) {
 	return CARD_FACE_UNKNOWN;
 }
 
-bool card_face_validate(CardFace face) {
+bool
+card_face_validate(CardFace face) {
 	if (face != CARD_FACE_FRONT && face != CARD_FACE_BACK) {
 		return false;
 	}
 	return true;
 }
 
-CardImages card_images_init(String cardId) {
+CardImages
+card_images_init(String cardId) {
 	String ownedId = string_init();
 	int result = string_copy(&ownedId, cardId);
 	return (CardImages){
@@ -41,9 +45,13 @@ CardImages card_images_init(String cardId) {
 	};
 }
 
-CardImagesVec card_images_vec_init() { return (CardImagesVec){NULL, 0, 0}; }
+CardImagesVec
+card_images_vec_init() {
+	return (CardImagesVec){NULL, 0, 0};
+}
 
-int card_images_find_by_id(CardImagesVec vec, String id) {
+int
+card_images_find_by_id(CardImagesVec vec, String id) {
 	for (int i = 0; i < vec.size; i++) {
 		if (string_equal(vec.cardsImages[i].cardId, id)) {
 			return i;
@@ -52,8 +60,9 @@ int card_images_find_by_id(CardImagesVec vec, String id) {
 	return CARD_NOT_FOUND;
 }
 
-void card_images_vec_push(CardImagesVec *vec, SDL_Texture *texture, String id,
-						  CardFace face) {
+void
+card_images_vec_push(CardImagesVec *vec, SDL_Texture *texture, String id,
+					 CardFace face) {
 	if (!card_face_validate(face)) {
 		fprintf(stderr, "invalid card face in image vec push %d\n", face);
 		exit(1);
@@ -84,7 +93,8 @@ void card_images_vec_push(CardImagesVec *vec, SDL_Texture *texture, String id,
 	}
 }
 
-void card_images_vec_free(CardImagesVec *vec) {
+void
+card_images_vec_free(CardImagesVec *vec) {
 	for (int i = 0; i < vec->size; i++) {
 		if (vec->cardsImages->faces[CARD_FACE_FRONT] != NULL) {
 			SDL_DestroyTexture(vec->cardsImages[i].faces[CARD_FACE_FRONT]);
@@ -103,9 +113,13 @@ void card_images_vec_free(CardImagesVec *vec) {
 	vec->size = vec->capacity = 0;
 }
 
-CStringVec cstring_vec_init() { return (CStringVec){NULL, 0, 0}; }
+CStringVec
+cstring_vec_init() {
+	return (CStringVec){NULL, 0, 0};
+}
 
-char *cstring_to_lower(char *str) {
+char *
+cstring_to_lower(char *str) {
 	int strLen = strlen(str);
 	char *newStr = (char *)malloc(sizeof(char) * (strLen + 1));
 	for (int i = 0; str[i] != '\0'; i++) {
@@ -115,14 +129,16 @@ char *cstring_to_lower(char *str) {
 	return newStr;
 }
 
-char *_cstring_from_str(char *str) {
+char *
+_cstring_from_str(char *str) {
 	int size = strlen(str);
 	char *cstring = (char *)malloc(sizeof(char) * (size + 1));
 	strcpy(cstring, str);
 	return cstring;
 }
 
-int cstring_vec_push(CStringVec *vec, char *string) {
+int
+cstring_vec_push(CStringVec *vec, char *string) {
 	if (vec->size == vec->capacity) {
 		vec->capacity = (vec->capacity + 1) * 2;
 		vec->strings = realloc_raw_array(vec->strings, vec->capacity);
@@ -135,7 +151,8 @@ int cstring_vec_push(CStringVec *vec, char *string) {
 	return 0;
 }
 
-void cstring_vec_free(CStringVec *vec) {
+void
+cstring_vec_free(CStringVec *vec) {
 	for (int i = 0; i < vec->size; i++) {
 		free(vec->strings[i]);
 		vec->strings[i] = NULL;
@@ -145,13 +162,15 @@ void cstring_vec_free(CStringVec *vec) {
 	vec->size = vec->capacity = 0;
 }
 
-String string_init() {
+String
+string_init() {
 	char *terminator = (char *)malloc(sizeof(char) * STRING_INITIAL_SIZE);
 	memset(terminator, '\0', STRING_INITIAL_SIZE);
 	return (String){terminator, 0, STRING_INITIAL_SIZE};
 }
 
-int string_push_char(String *string, char cChar) {
+int
+string_push_char(String *string, char cChar) {
 	if (1 + string->size >= string->capacity) {
 		string->capacity = (1 + string->size) * 2;
 		string->characters =
@@ -165,7 +184,8 @@ int string_push_char(String *string, char cChar) {
 	return 0;
 }
 
-int string_push_cstring(String *string, char *cstring) {
+int
+string_push_cstring(String *string, char *cstring) {
 	int cstringSize = strlen(cstring);
 	if (cstringSize + string->size >= string->capacity) {
 		string->capacity = (cstringSize + string->size) * 2;
@@ -180,7 +200,8 @@ int string_push_cstring(String *string, char *cstring) {
 	return 0;
 }
 
-int string_copy(String *destination, String source) {
+int
+string_copy(String *destination, String source) {
 	if (source.size > destination->capacity) {
 		destination->capacity = (source.size) * 2;
 		destination->characters =
@@ -195,7 +216,8 @@ int string_copy(String *destination, String source) {
 	return 0;
 }
 
-bool string_equal(String s1, String s2) {
+bool
+string_equal(String s1, String s2) {
 	if (s1.size != s2.size) {
 		return false;
 	}
@@ -207,14 +229,19 @@ bool string_equal(String s1, String s2) {
 	return true;
 }
 
-void string_reset(String *str) {
+void
+string_reset(String *str) {
 	str->size = 0;
 	str->characters[0] = '\0';
 }
 
-char *string_as_cstring(String str) { return str.characters; }
+char *
+string_as_cstring(String str) {
+	return str.characters;
+}
 
-void string_free(String *vec) {
+void
+string_free(String *vec) {
 	free(vec->characters);
 	vec->characters = NULL;
 	vec->size = vec->capacity = 0;

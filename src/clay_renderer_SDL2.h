@@ -14,8 +14,9 @@ typedef struct {
 	TTF_Font *font;
 } SDL2_Font;
 
-Clay_Dimensions SDL2_MeasureText(Clay_StringSlice text,
-								 Clay_TextElementConfig *config,
-								 void *userData);
-void Clay_SDL2_Render(SDL_Renderer *renderer,
-					  Clay_RenderCommandArray renderCommands, SDL2_Font *fonts);
+Clay_Dimensions
+SDL2_MeasureText(Clay_StringSlice text, Clay_TextElementConfig *config,
+				 void *userData);
+void
+Clay_SDL2_Render(SDL_Renderer *renderer, Clay_RenderCommandArray renderCommands,
+				 SDL2_Font *fonts);

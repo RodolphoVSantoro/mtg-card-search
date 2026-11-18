@@ -53,25 +53,46 @@ typedef struct {
 
 #define cstring_from_str(str) _cstring_from_str("" str "")
 
-const char *card_face_as_str(CardFace cardFace);
-CardFace card_face_from_cstring(const char *cardFaceStr);
-CardImages card_images_init(String cardId);
-bool card_face_validate(CardFace face);
-CardImagesVec card_images_vec_init();
-void card_images_vec_push(CardImagesVec *vec, SDL_Texture *surface, String id,
-						  CardFace face);
-int card_images_find_by_id(CardImagesVec vec, String id);
-void card_images_vec_free(CardImagesVec *vec);
-CStringVec cstring_vec_init();
-char *_cstring_from_str(char *str);
-char *cstring_to_lower(char *str);
-int cstring_vec_push(CStringVec *vec, char *string);
-void cstring_vec_free(CStringVec *vec);
-String string_init();
-int string_push_cstring(String *string, char *cstring);
-int string_push_char(String *string, char cChar);
-char *string_as_cstring(String str);
-void string_free(String *vec);
-int string_copy(String *destination, String source);
-bool string_equal(String s1, String s2);
-void string_reset(String *str);
+const char *
+card_face_as_str(CardFace cardFace);
+CardFace
+card_face_from_cstring(const char *cardFaceStr);
+CardImages
+card_images_init(String cardId);
+bool
+card_face_validate(CardFace face);
+CardImagesVec
+card_images_vec_init();
+void
+card_images_vec_push(CardImagesVec *vec, SDL_Texture *surface, String id,
+					 CardFace face);
+int
+card_images_find_by_id(CardImagesVec vec, String id);
+void
+card_images_vec_free(CardImagesVec *vec);
+CStringVec
+cstring_vec_init();
+char *
+_cstring_from_str(char *str);
+char *
+cstring_to_lower(char *str);
+int
+cstring_vec_push(CStringVec *vec, char *string);
+void
+cstring_vec_free(CStringVec *vec);
+String
+string_init();
+int
+string_push_cstring(String *string, char *cstring);
+int
+string_push_char(String *string, char cChar);
+char *
+string_as_cstring(String str);
+void
+string_free(String *vec);
+int
+string_copy(String *destination, String source);
+bool
+string_equal(String s1, String s2);
+void
+string_reset(String *str);

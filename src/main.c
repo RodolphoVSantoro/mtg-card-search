@@ -21,7 +21,8 @@
 #define FRAME_TARGET_TIME (1000 / TARGET_FPS)
 #define MAIN_ERROR -1
 
-int main(int argc, char *argv[]) {
+int
+main(int argc, char *argv[]) {
 	CardImagesVec cardImages = card_images_vec_init();
 	CStringVec scryfallIds = cstring_vec_init();
 	int returnVal = 0;

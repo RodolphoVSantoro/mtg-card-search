@@ -10,7 +10,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static int build_query(String *sql, CStringVec strs) {
+static int
+build_query(String *sql, CStringVec strs) {
 	int error = string_push_cstring(sql, SQL_IMAGE_SELECT);
 	return_if_string_error(result, sql);
 
@@ -36,9 +37,9 @@ static int build_query(String *sql, CStringVec strs) {
 	return 0;
 }
 
-static SDL_Texture *create_surface_from_avif(SDL_Renderer *renderer,
-											 const uint8_t *avifData,
-											 size_t dataSize) {
+static SDL_Texture *
+create_surface_from_avif(SDL_Renderer *renderer, const uint8_t *avifData,
+						 size_t dataSize) {
 	// 1. Initialize AVIF decoder
 	avifDecoder *decoder = avifDecoderCreate();
 	if (!decoder) {
@@ -118,8 +119,9 @@ static SDL_Texture *create_surface_from_avif(SDL_Renderer *renderer,
 	return texture;
 }
 
-int get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
-						 CardImagesVec *cardImages, CStringVec strs) {
+int
+get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
+					 CardImagesVec *cardImages, CStringVec strs) {
 	String sql = string_init();
 	int error = build_query(&sql, strs);
 	if (error != 0) {
