@@ -1,0 +1,1099 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"CARD_FACE",
+				"CARD_FACE_UNKNOWN"
+			],
+			[
+				"cardI",
+				"cardImages"
+			],
+			[
+				"cardFa",
+				"cardFaceStr"
+			],
+			[
+				"card_images",
+				"card_images_vec_push"
+			],
+			[
+				"sql",
+				"sqlite3"
+			],
+			[
+				"C",
+				"CardImages"
+			],
+			[
+				"CARD_",
+				"CARD_FACE_FRONT"
+			],
+			[
+				"CadImages",
+				"cardsImages"
+			],
+			[
+				"Card",
+				"CardImagesVec"
+			],
+			[
+				"SQL_IMAGE_",
+				"SQL_IMAGE_START_WHERE"
+			],
+			[
+				"SQL_",
+				"SQL_IMAGE_SELECT"
+			],
+			[
+				"string_pus",
+				"string_push_cstring"
+			],
+			[
+				"cstr",
+				"cstringSize"
+			],
+			[
+				"cst",
+				"cstringSize"
+			],
+			[
+				"col",
+				"collections.h"
+			],
+			[
+				"mtg_filter",
+				"mtg_filter.h"
+			],
+			[
+				"ttf",
+				"ttfInitiated"
+			],
+			[
+				"ret",
+				"returnVal"
+			],
+			[
+				"SDL",
+				"SDL2/"
+			],
+			[
+				"blob",
+				"blob_size_sdl"
+			],
+			[
+				"blob_s",
+				"blob_size_sdl"
+			],
+			[
+				"u",
+				"uint8_t"
+			],
+			[
+				"blob_",
+				"blob_data_sdl"
+			],
+			[
+				"av",
+				"avif_cxx.h\""
+			],
+			[
+				"raise",
+				"raise_if_sql_error"
+			],
+			[
+				"utf",
+				"utf8"
+			],
+			[
+				"card",
+				"cardJpeg"
+			],
+			[
+				"cardJ",
+				"cardJpegs"
+			],
+			[
+				"scryf",
+				"scryfallUrl"
+			],
+			[
+				"scryfa",
+				"scryfallUrl"
+			],
+			[
+				"scr",
+				"scryfallUrl"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"scry",
+				"scryFallUrl"
+			],
+			[
+				"Sq",
+				"SqlitePool"
+			],
+			[
+				"from",
+				"from_str(use std::str::FromStr)"
+			],
+			[
+				"SqliteCo",
+				"SqliteConnectOptions(use sqlx::sqlite::SqliteConnectOptions)"
+			],
+			[
+				"fil",
+				"filename: String"
+			],
+			[
+				"prit",
+				"println!(…)"
+			],
+			[
+				"Options",
+				"SqlitePoolOptions(use sqlx::sqlite::SqlitePoolOptions)"
+			],
+			[
+				"file",
+				"filename: String"
+			],
+			[
+				"Pat",
+				"Path(use std::path::Path)"
+			],
+			[
+				"print",
+				"println!(…)"
+			],
+			[
+				"De",
+				"Deserialize(use serde::Deserialize)"
+			],
+			[
+				"fet",
+				"fetch_many"
+			],
+			[
+				"pri",
+				"println!(…)"
+			],
+			[
+				"mat",
+				"match"
+			],
+			[
+				"Sqlite",
+				"Sqlite(use sqlx::Sqlite)"
+			],
+			[
+				"pr",
+				"println!(…)"
+			],
+			[
+				"Im",
+				"impl"
+			],
+			[
+				"b",
+				"builder"
+			],
+			[
+				"Sql",
+				"SqlQueryBuilder"
+			],
+			[
+				"DB",
+				"database::"
+			],
+			[
+				"ad",
+				"add_and()"
+			],
+			[
+				"add",
+				"add_and()"
+			],
+			[
+				"appl",
+				"apply_or_filter(…)"
+			],
+			[
+				"app",
+				"apply_like_filter(…)"
+			],
+			[
+				"Com",
+				"CompareFilterValueType"
+			],
+			[
+				"SQ",
+				"Sqlite"
+			],
+			[
+				"pac",
+				"panic!(…)"
+			],
+			[
+				"as_",
+				"as_i64()"
+			],
+			[
+				"be",
+				"begin_multi_filter()"
+			],
+			[
+				"has",
+				"has_multi_filter"
+			],
+			[
+				"not",
+				"not_like_filter_value"
+			],
+			[
+				"like",
+				"like_filter_values"
+			],
+			[
+				"i",
+				"is_none()"
+			],
+			[
+				"like_filter",
+				"like_filter_value"
+			],
+			[
+				"count",
+				"count_builder"
+			],
+			[
+				"li",
+				"like_filter"
+			],
+			[
+				"m",
+				"map"
+			],
+			[
+				"CardSimple",
+				"CardSimpleResult"
+			],
+			[
+				"q",
+				"query_start"
+			],
+			[
+				"unwrap_or",
+				"unwrap_or_else"
+			],
+			[
+				"un",
+				"unwrap_or(…)"
+			],
+			[
+				"l",
+				"all"
+			],
+			[
+				"All",
+				"AllPrintings.sqlite"
+			],
+			[
+				"ToS",
+				"toSorted"
+			],
+			[
+				"costT",
+				"costType"
+			],
+			[
+				"flat",
+				"flat"
+			],
+			[
+				"cost",
+				"costKeys"
+			],
+			[
+				"colo",
+				"colorDict"
+			],
+			[
+				"fo",
+				"forEach"
+			],
+			[
+				"com",
+				"commander15Set"
+			],
+			[
+				"mtg",
+				"mtgAllPrintings.ts"
+			],
+			[
+				"MtgSet",
+				"MtgSet"
+			],
+			[
+				"Id",
+				"Identifiers"
+			],
+			[
+				"writeFi",
+				"writeFileSync"
+			],
+			[
+				"writeFile",
+				"writeFileSync"
+			],
+			[
+				"Json",
+				"JSON"
+			],
+			[
+				"readFi",
+				"readFileSync"
+			],
+			[
+				"con",
+				"console"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/main.c",
+			"file_size": 9432,
+			"file_write_time": 134390815240217767,
+			"settings":
+			{
+				"buffer_size": 9432,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					16,
+					1,
+					"left_delete",
+					null,
+					"AQAAAGgAAAAAAAAAaAAAAAAAAAABAAAAIg",
+					"AQAAAAAAAAABAAAAaQAAAAAAAABpAAAAAAAAAP///////+9/"
+				],
+				[
+					18,
+					1,
+					"left_delete",
+					null,
+					"AQAAAGcAAAAAAAAAZwAAAAAAAAABAAAAaA",
+					"AQAAAAAAAAABAAAAaAAAAAAAAABoAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					21,
+					1,
+					"insert",
+					{
+						"characters": "!"
+					},
+					"AQAAAGcAAAAAAAAAaAAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAZwAAAAAAAABnAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					23,
+					1,
+					"left_delete",
+					null,
+					"AQAAAGcAAAAAAAAAZwAAAAAAAAABAAAAIQ",
+					"AQAAAAAAAAABAAAAaAAAAAAAAABoAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					25,
+					1,
+					"insert",
+					{
+						"characters": "\""
+					},
+					"AQAAAGcAAAAAAAAAaAAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAZwAAAAAAAABnAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					32,
+					1,
+					"insert",
+					{
+						"characters": "h"
+					},
+					"AQAAAGcAAAAAAAAAaAAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAZwAAAAAAAABnAAAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"restart",
+				"LSP: Restart Server"
+			],
+			[
+				"python",
+				"Set Syntax: Python"
+			],
+			[
+				"log lsp",
+				"LSP: Toggle Log Panel"
+			],
+			[
+				"lsp log panel",
+				"LSP: Toggle Log Panel"
+			],
+			[
+				"lsp log pane",
+				"LSP: Toggle Log Panel"
+			],
+			[
+				"lsp logs",
+				"LSP: Goto Diagnostic"
+			],
+			[
+				"lsp clang",
+				"Preferences: LSP-clangd Settings"
+			],
+			[
+				"clangd ",
+				"Preferences: LSP-clangd Settings"
+			],
+			[
+				"settings",
+				"Preferences: Settings"
+			],
+			[
+				"clang settings",
+				"Preferences: LSP-clangd Settings"
+			],
+			[
+				"format",
+				"LSP: Format File"
+			],
+			[
+				"for",
+				"LSP: Format File"
+			],
+			[
+				"rainbow indent",
+				"RainbowIndent: Enable for This View (Forced)"
+			],
+			[
+				"json",
+				"JSON Reindent: reindent file or selection"
+			],
+			[
+				"j",
+				"Set Syntax: JSON"
+			],
+			[
+				"preview",
+				"MarkdownGlance: Toggle Preview"
+			],
+			[
+				"mark",
+				"MarkdownGlance: Toggle Preview"
+			],
+			[
+				"key",
+				"Preferences: Key Bindings"
+			],
+			[
+				"md",
+				"MarkdownGlance: Toggle Preview"
+			],
+			[
+				"package insta",
+				"Package Control: Install Package"
+			],
+			[
+				"terminus",
+				"Preferences: Terminus Key Bindings"
+			],
+			[
+				"rainb",
+				"RainbowBrackets: Color"
+			],
+			[
+				"package list",
+				"Package Control: List Packages"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"packge insta",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"lsp-json",
+				"Preferences: LSP-json Settings"
+			],
+			[
+				"package install",
+				"Package Control: Install Package"
+			],
+			[
+				"package remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"keynb",
+				"Preferences: Key Bindings"
+			],
+			[
+				"rainbow",
+				"RainbowBrackets: Color"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"package instal",
+				"Package Control: Install Package"
+			],
+			[
+				"terminus ke",
+				"Preferences: Terminus Key Bindings"
+			],
+			[
+				"set syntax fish",
+				"Set Syntax: Fish"
+			],
+			[
+				"theme",
+				"UI: Select Color Scheme"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/.cache"
+	],
+	"file_history":
+	[
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/.gitignore",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/main.c",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/compile_commands.json",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/mtg-card-search.sublime-project",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/generate_compile_commands.py",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/.clangd",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/collections.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/clay-video-demo.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/Makefile",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/.clang-format",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_imgs.c",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/clay_renderer_SDL2.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_imgs.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/card_filter.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/card_filter.c",
+		"/usr/include/SDL/SDL.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/headers/SDL/SDL_render.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_cards.c",
+		"/usr/include/SDL/SDL_stdinc.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/headers/SDL/SDL.h",
+		"/usr/include/SDL2/SDL_stdinc.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/compile_flags.txt",
+		"/home/rodolphovs/Documents/cards.txt",
+		"/mnt/nvme 1tb/SteamLibrary/steamapps/workshop/content/108600/3807686870/mods/ZombieBuddy_Extensions/42/README.md",
+		"/mnt/nvme 1tb/SteamLibrary/steamapps/common/ProjectZomboid/projectzomboid/ProjectZomboid64.json",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/collections.c",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/resources/generate_db.py",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_cards.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/resources/imageDownloader/node_modules/@types/node/string_decoder.d.ts",
+		"/home/rodolphovs/Downloads/Rinas-Undercover-Train-Operation-Patch-en/Installation Instructions.txt",
+		"/home/rodolphovs/Downloads/Rinas-Undercover-Train-Operation-Patch-en/Install Patch.desktop",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/clay-video-demo.c",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/clay_renderer_SDL2.c",
+		"/usr/include/SDL2/SDL_image.h",
+		"/usr/include/sqlite3.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/clay.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/.clang-format",
+		"/mnt/Hd4TB/projetos_pessoais/c-examples/makefile/makefile",
+		"/mnt/Hd4TB/projetos_pessoais/official-sqlite/sqlite-amalgamation-3540100/sqlite3.c",
+		"/mnt/Hd4TB/projetos_pessoais/official-sqlite/sqlite-amalgamation-3540100/shell.c",
+		"/mnt/Hd4TB/projetos_pessoais/official-sqlite/sqlite-amalgamation-3540100/sqlite3ext.h",
+		"/mnt/Hd4TB/projetos_pessoais/official-sqlite/sqlite-amalgamation-3540100/sqlite3.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/README.md",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/resources/imageDownloader/cardUrls.csv",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/scryfall/avif-library.txt",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/clay_renderer_SDL2.c",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/clay-video-demo.c",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/clay.h",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/clay/renderers/SDL2/clay_renderer_SDL2.c",
+		"/usr/lib/clang/23/include/stdint.h",
+		"/mnt/Hd4TB/projetos_pessoais/c-async-disk-api/makefile",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/clay/renderers/SDL2/README",
+		"/mnt/penis-drive/scryfall-dl/downloader.ts",
+		"/run/media/rodolphovs/penis-drive/scryfall-dl/imageDownloader/reader.ts",
+		"/run/media/rodolphovs/penis-drive/scryfall-dl/downloader.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/resources/imageDownloader/downloader.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/resources/imageDownloader/reader.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/resources/images/0000a54c-a511-4925-92dc-01b937f9afad.txt",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/resources/imageDownloader/test.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/resources/images/script/downloader.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/resources/images/downloader.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/scryfall/all-cards-20261101102243.jsonl",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/scryfall/unique-artwork-20261101100315.jsonl",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/scryfall/all-data-manifest.json",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/filters.md",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/helpers/db.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/main.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/.env",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/.env.example",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/.gitignore",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/Cargo.toml",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/repositories/card.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/helpers/mod.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/test.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/routes/card.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/helpers/query_builder.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/helpers/responses.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/models/card.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/repositories/example.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/src/repositories/mod.rs",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/README.md",
+		"/home/rodolphovs/Documents/.env",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/simple_return.md",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/endpoints.md",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/complete_return.md",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-rs/test.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-ts/src/sqliteClient.ts",
+		"/mnt/Hd4TB/backups/pc/Insomnia_2026-10-18.yaml",
+		"/mnt/Hd4TB/backups/pc/mdm.json",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-ts/src/index.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-ts/sqliteClient.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-ts/index.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/sqliteClient.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/wizards.txt",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/costTypes.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/index.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/costDict.json",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/possibleCostTypes.json",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtgAllPrintings.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/sealedProduct.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/translations.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/cardSet.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtgSet.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/deck.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/cardToken.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/boosters.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/cardAtomic.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/foreignData.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/leaderShipSkills.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/cardDeck.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/sourceProducts.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/rulings.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/relatedCards.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/purchaseUrls.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/legalities.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/card.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/identifier.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/skusId.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/boosterConfig.ts",
+		"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtgSets.ts",
+		"/home/rodolphovs/Downloads/AllPrintings.json",
+		"/mnt/Hd4TB/projetos_pessoais/test-js/bun-test/index.ts",
+		"/mnt/Hd4TB/projetos_pessoais/test-js/node-test/imporsTest.js",
+		"/mnt/Hd4TB/projetos_pessoais/test-js/node-test/importTest.js",
+		"/mnt/Hd4TB/projetos_pessoais/test-js/node-test/test.js",
+		"/home/rodolphovs/.config/fish/config.fish",
+		"/mnt/Hd4TB/projetos_pessoais/bun-async-disk-api/package.json",
+		"/mnt/Hd4TB/projetos_pessoais/ascii-grid/rust-lib/src/lib.rs"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search\",",
+			"\".\"",
+			"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search",
+			"I/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search",
+			"/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search",
+			"./src/dependencies",
+			"mtg_imgs",
+			"imgs.c",
+			"dependencies/headers/SDL",
+			"SDL",
+			"SDL_Texture",
+			"texture",
+			"SDL2/",
+			"SDL2"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/main.c",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9432,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								105,
+								105
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html, text.xml"
+								},
+								{
+									"rhs_empty": true,
+									"selector": "punctuation.accessor"
+								},
+								{
+									"characters": ".<>:\"/*",
+									"selector": "punctuation.accessor | (meta.preprocessor.include string - punctuation.definition.string.end)",
+									"server": "LSP-clangd"
+								}
+							],
+							"git_gutter_is_enabled": true,
+							"lsp_active": true,
+							"lsp_uri": "file:///mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/main.c",
+							"rainbow_checked": true,
+							"rainbowth.lispy": false,
+							"show_definitions": false,
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 44.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.GitSavvy Command Log":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"output.LSP Log Panel":
+	{
+		"height": 436.0,
+		"history":
+		[
+		]
+	},
+	"output.LSP Messages":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"output.diagnostics":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"output.find_results":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"pinned_build_system": "",
+	"project": "mtg-card-search.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"main.c",
+				"src/main.c"
+			],
+			[
+				"make",
+				"Makefile"
+			],
+			[
+				"coll",
+				"src/collections.h"
+			],
+			[
+				"collect",
+				"src/collections.h"
+			],
+			[
+				"collections",
+				"src/collections.c"
+			],
+			[
+				"collec",
+				"src/collections.h"
+			],
+			[
+				"filter.h",
+				"src/card_filter.h"
+			],
+			[
+				"mtg_im",
+				"src/mtg_imgs.h"
+			],
+			[
+				"col",
+				"src/collections.h"
+			],
+			[
+				"c",
+				"src/collections.h"
+			],
+			[
+				"",
+				"src/collections.c"
+			],
+			[
+				"colle",
+				"src/collections.c"
+			],
+			[
+				"imgs.",
+				"src/mtg_imgs.h"
+			],
+			[
+				"imgs.h",
+				"src/mtg_imgs.h"
+			],
+			[
+				"mtg_",
+				"resources/imageDownloader/node_modules/@types/node/string_decoder.d.ts"
+			],
+			[
+				"cargotm",
+				"Cargo.toml"
+			],
+			[
+				"repositories/",
+				"src/repositories/card.rs"
+			],
+			[
+				"quer",
+				"src/helpers/query_builder.rs"
+			],
+			[
+				"readme",
+				"README.md"
+			],
+			[
+				"client sqlite",
+				"src/sqliteClient.ts"
+			],
+			[
+				"cost",
+				"possibleCostTypes.json"
+			],
+			[
+				"cos",
+				"costDict.json"
+			],
+			[
+				"package",
+				"package.json"
+			],
+			[
+				"rust-lib/src/",
+				"rust-lib/src/lib.rs"
+			],
+			[
+				"rustlib/",
+				"rust-lib/interop_rs.c"
+			],
+			[
+				"docker",
+				"docker-compose.yml"
+			],
+			[
+				"exec",
+				"executarTesteScala.sh"
+			],
+			[
+				"test",
+				"test.json"
+			],
+			[
+				"src/",
+				"src/api.c"
+			],
+			[
+				"pack",
+				"package.json"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"lsp_show_inlay_hints": false
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 376.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

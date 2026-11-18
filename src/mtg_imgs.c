@@ -1,12 +1,10 @@
-#include "collections.h"
-#include "dependencies/avif.h"
-#include "sqlite3.h"
-
 #include "mtg_imgs.h"
+#include "collections.h"
 
-#include <SDL2/SDL.h>
+#include <avif.h>
+#include <sdl/SDL_render.h>
+#include <sqlite3.h>
 
-#include <SDL2/SDL_render.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -134,7 +132,7 @@ int get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
 	error =
 		sqlite3_prepare_v2(imageDb, string_as_cstring(sql), -1, &stmt, NULL);
 	if (error != SQLITE_OK) {
-		fprintf(stderr, "Failed to prepare statement: %s\n",
+		fprintf(stderr, "Failed to prepare image statement: %s\n",
 				sqlite3_errmsg(imageDb));
 		string_free(&sql);
 		sqlite3_finalize(stmt);
@@ -168,7 +166,8 @@ int get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
 	}
 	string_free(&cardScryfallId);
 	if (error != 0 && error != SQLITE_DONE) {
-		fprintf(stderr, "Execution error: %s\n", sqlite3_errmsg(imageDb));
+		fprintf(stderr, "Execution error on imgs: %s\n",
+				sqlite3_errmsg(imageDb));
 		card_images_vec_free(cardImages);
 		string_free(&sql);
 		sqlite3_finalize(stmt);

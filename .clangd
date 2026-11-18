@@ -1,0 +1,6 @@
+If:
+  PathMatch: [.*\.h$]
+CompileFlags:
+  Add:
+    - "-std=c23"
+    - "-I./src/dependencies/headers"

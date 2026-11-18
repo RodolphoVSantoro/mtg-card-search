@@ -1,6 +1,5 @@
 #pragma once
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_render.h>
+#include "sdl/SDL_render.h"
 #include <stdbool.h>
 
 #define STRING_INITIAL_SIZE 128
@@ -65,6 +64,7 @@ int card_images_find_by_id(CardImagesVec vec, String id);
 void card_images_vec_free(CardImagesVec *vec);
 CStringVec cstring_vec_init();
 char *_cstring_from_str(char *str);
+char *cstring_to_lower(char *str);
 int cstring_vec_push(CStringVec *vec, char *string);
 void cstring_vec_free(CStringVec *vec);
 String string_init();

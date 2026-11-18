@@ -1,4 +1,5 @@
 #include "collections.h"
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -103,6 +104,16 @@ void card_images_vec_free(CardImagesVec *vec) {
 }
 
 CStringVec cstring_vec_init() { return (CStringVec){NULL, 0, 0}; }
+
+char *cstring_to_lower(char *str) {
+	int strLen = strlen(str);
+	char *newStr = (char *)malloc(sizeof(char) * (strLen + 1));
+	for (int i = 0; str[i] != '\0'; i++) {
+		newStr[i] = tolower(str[i]);
+	}
+	newStr[strLen] = '\0';
+	return newStr;
+}
 
 char *_cstring_from_str(char *str) {
 	int size = strlen(str);

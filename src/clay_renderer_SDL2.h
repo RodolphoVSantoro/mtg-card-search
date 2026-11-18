@@ -1,7 +1,7 @@
-#include "dependencies/clay.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+#pragma once
+
+#include "clay.h"
+#include "sdl/SDL_ttf.h"
 #include <math.h>
 #include <stdio.h>
 
