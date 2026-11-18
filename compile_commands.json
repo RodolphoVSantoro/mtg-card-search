@@ -1,0 +1,32 @@
+[
+  {
+    "directory": "../",
+    "command": "gcc -std=c23 -g -I/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/headers -c /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/main.c -o /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/main.o",
+    "file": "/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/main.c"
+  },
+  {
+    "directory": "../",
+    "command": "gcc -std=c23 -g -I/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/headers -c /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/collections.c -o /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/collections.o",
+    "file": "/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/collections.c"
+  },
+  {
+    "directory": "../",
+    "command": "gcc -std=c23 -g -I/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/headers -c /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/card_filter.c -o /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/card_filter.o",
+    "file": "/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/card_filter.c"
+  },
+  {
+    "directory": "../",
+    "command": "gcc -std=c23 -g -I/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/headers -c /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_cards.c -o /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_cards.o",
+    "file": "/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_cards.c"
+  },
+  {
+    "directory": "../",
+    "command": "gcc -std=c23 -g -I/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/headers -c /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_imgs.c -o /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_imgs.o",
+    "file": "/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/mtg_imgs.c"
+  },
+  {
+    "directory": "../",
+    "command": "gcc -std=c23 -g -I/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/headers -c /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/libraries/sqlite3.c -o /mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/libraries/sqlite3.o",
+    "file": "/mnt/Hd4TB/projetos_pessoais/mtg-sql/mtg-card-search/src/dependencies/libraries/sqlite3.c"
+  }
+]

@@ -2,4 +2,7 @@ clay
 resources
 scryfall
 mtg-card-search
+mtg-card-search-dev
 mtg-card-search-debug
+src/dependencies/*
+!src/dependencies/.gitkeep
