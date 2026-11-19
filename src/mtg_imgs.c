@@ -38,8 +38,8 @@ build_query(String *sql, CStringVec strs) {
 }
 
 static SDL_Texture *
-create_surface_from_avif(SDL_Renderer *renderer, const uint8_t *avifData,
-						 size_t dataSize) {
+avif_buffer_to_sdl_surface(SDL_Renderer *renderer, const uint8_t *avifData,
+						   size_t dataSize) {
 	// 1. Initialize AVIF decoder
 	avifDecoder *decoder = avifDecoderCreate();
 	if (!decoder) {
@@ -156,7 +156,7 @@ get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
 		const uint8_t *blob_data = sqlite3_column_blob(stmt, 2);
 		int blob_size = sqlite3_column_bytes(stmt, 2);
 		SDL_Texture *cardImage =
-			create_surface_from_avif(renderer, blob_data, blob_size);
+			avif_buffer_to_sdl_surface(renderer, blob_data, blob_size);
 		free(blob_data_sdl);
 		card_images_vec_push(cardImages, cardImage, cardScryfallId, cardFace);
 		string_reset(&cardScryfallId);
