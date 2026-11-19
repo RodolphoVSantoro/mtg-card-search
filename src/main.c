@@ -34,13 +34,13 @@ int
 sqlite_init(sqlite3 **imageDb, sqlite3 **cardDb);
 int
 sdl_init(SDL_Renderer **renderer, SDL_Window **window,
-		 SDL2_Font fonts[CLAY_FONT_AMOUNT]);
+		 SDL2Font fonts[CLAY_FONT_AMOUNT]);
 ClayData
 clay_init(SDL_Renderer *renderer, SDL_Window *window,
-		  SDL2_Font fonts[CLAY_FONT_AMOUNT], CardImagesVec *cardImages);
+		  SDL2Font fonts[CLAY_FONT_AMOUNT], CardImagesVec *cardImages);
 int
 event_loop(SDL_Renderer *renderer, SDL_Window *window,
-		   SDL2_Font fonts[CLAY_FONT_AMOUNT], ClayData *clayData);
+		   SDL2Font fonts[CLAY_FONT_AMOUNT], ClayData *clayData);
 
 int
 card_search(sqlite3 *cardDb, sqlite3 *imageDb, SDL_Renderer *renderer,
@@ -57,7 +57,7 @@ main(int argc, char *argv[]) {
 
 	SDL_Renderer *renderer = nullptr;
 	SDL_Window *window = nullptr;
-	SDL2_Font fonts[CLAY_FONT_AMOUNT] = {};
+	SDL2Font fonts[CLAY_FONT_AMOUNT] = {};
 	fonts[FONT_ID_BODY_16].fontId = FONT_ID_BODY_16;
 	fonts[FONT_ID_BODY_16].font = nullptr;
 
@@ -138,7 +138,7 @@ sqlite_init(sqlite3 **imageDb, sqlite3 **cardDb) {
 
 int
 sdl_init(SDL_Renderer **renderer, SDL_Window **window,
-		 SDL2_Font fonts[CLAY_FONT_AMOUNT]) {
+		 SDL2Font fonts[CLAY_FONT_AMOUNT]) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fprintf(stderr, "Error: could not initialize SDL: %s\n",
 				SDL_GetError());
@@ -187,7 +187,7 @@ sdl_init(SDL_Renderer **renderer, SDL_Window **window,
 
 ClayData
 clay_init(SDL_Renderer *renderer, SDL_Window *window,
-		  SDL2_Font fonts[CLAY_FONT_AMOUNT], CardImagesVec *cardImages) {
+		  SDL2Font fonts[CLAY_FONT_AMOUNT], CardImagesVec *cardImages) {
 	uint64_t totalMemorySize = Clay_MinMemorySize();
 	Clay_Arena clayMemory = Clay_CreateArenaWithCapacityAndMemory(
 		totalMemorySize, malloc(totalMemorySize));
@@ -198,7 +198,7 @@ clay_init(SDL_Renderer *renderer, SDL_Window *window,
 	Clay_Initialize(clayMemory,
 					(Clay_Dimensions){(float)windowWidth, (float)windowHeight},
 					(Clay_ErrorHandler){handle_clay_errors, NULL});
-	Clay_SetMeasureTextFunction(SDL2_MeasureText, fonts);
+	Clay_SetMeasureTextFunction(measure_text, fonts);
 
 	ClayData userData = {
 		.window = window,
@@ -213,7 +213,7 @@ clay_init(SDL_Renderer *renderer, SDL_Window *window,
 }
 
 int
-event_loop(SDL_Renderer *renderer, SDL_Window *window, SDL2_Font *fonts,
+event_loop(SDL_Renderer *renderer, SDL_Window *window, SDL2Font *fonts,
 		   ClayData *clayData) {
 	SDL_AddEventWatch(resize_rendering, clayData);
 
@@ -276,7 +276,7 @@ event_loop(SDL_Renderer *renderer, SDL_Window *window, SDL2_Font *fonts,
 			return result;
 		}
 
-		Clay_SDL2_Render(renderer, renderCommands, fonts);
+		clay_sdl2_render(renderer, renderCommands, fonts);
 		SDL_RenderPresent(renderer);
 
 		Uint32 frame_time = SDL_GetTicks() - frame_start;

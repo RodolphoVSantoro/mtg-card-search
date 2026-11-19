@@ -3,9 +3,9 @@
 #include <stdio.h>
 
 Clay_Dimensions
-SDL2_MeasureText(Clay_StringSlice text, Clay_TextElementConfig *config,
-				 void *userData) {
-	SDL2_Font *fonts = (SDL2_Font *)userData;
+measure_text(Clay_StringSlice text, Clay_TextElementConfig *config,
+			 void *userData) {
+	SDL2Font *fonts = (SDL2Font *)userData;
 
 	TTF_Font *font = fonts[config->fontId].font;
 	TTF_SetFontSize(font, config->fontSize);
@@ -33,8 +33,8 @@ static int NUM_CIRCLE_SEGMENTS = 16;
 // all rendering is performed by a single SDL call, avoiding multiple RenderRect
 // + plumbing choice for circles.
 static void
-SDL_RenderFillRoundedRect(SDL_Renderer *renderer, const SDL_FRect rect,
-						  const float cornerRadius, const Clay_Color _color) {
+render_fill_rounded_rect(SDL_Renderer *renderer, const SDL_FRect rect,
+						 const float cornerRadius, const Clay_Color _color) {
 	const SDL_Color color = (SDL_Color){
 		.r = (Uint8)_color.r,
 		.g = (Uint8)_color.g,
@@ -197,9 +197,9 @@ SDL_RenderFillRoundedRect(SDL_Renderer *renderer, const SDL_FRect rect,
 // triangles, inner and outer, that fit together; along with two tringles to
 // fill the end gaps.
 static void
-SDL_RenderCornerBorder(SDL_Renderer *renderer, Clay_BoundingBox *boundingBox,
-					   Clay_BorderRenderData *config, int cornerIndex,
-					   Clay_Color _color) {
+render_corner_border(SDL_Renderer *renderer, Clay_BoundingBox *boundingBox,
+					 Clay_BorderRenderData *config, int cornerIndex,
+					 Clay_Color _color) {
 	/////////////////////////////////
 	// The arc is constructed of outer triangles and inner triangles (if
 	// needed). First three vertices are first outer triangle's vertices Each
@@ -359,8 +359,8 @@ SDL_RenderCornerBorder(SDL_Renderer *renderer, Clay_BoundingBox *boundingBox,
 SDL_Rect currentClippingRectangle;
 
 void
-Clay_SDL2_Render(SDL_Renderer *renderer, Clay_RenderCommandArray renderCommands,
-				 SDL2_Font *fonts) {
+clay_sdl2_render(SDL_Renderer *renderer, Clay_RenderCommandArray renderCommands,
+				 SDL2Font *fonts) {
 	for (uint32_t i = 0; i < renderCommands.length; i++) {
 		Clay_RenderCommand *renderCommand =
 			Clay_RenderCommandArray_Get(&renderCommands, i);
@@ -379,8 +379,8 @@ Clay_SDL2_Render(SDL_Renderer *renderer, Clay_RenderCommandArray renderCommands,
 				.h = boundingBox.height,
 			};
 			if (config->cornerRadius.topLeft > 0) {
-				SDL_RenderFillRoundedRect(renderer, rect,
-										  config->cornerRadius.topLeft, color);
+				render_fill_rounded_rect(renderer, rect,
+										 config->cornerRadius.topLeft, color);
 			} else {
 				SDL_RenderFillRectF(renderer, &rect);
 			}
@@ -510,25 +510,25 @@ Clay_SDL2_Render(SDL_Renderer *renderer, Clay_RenderCommandArray renderCommands,
 
 				// corner index: 0->3 topLeft -> CW -> bottonLeft
 				if (config->width.top > 0 & config->cornerRadius.topLeft > 0) {
-					SDL_RenderCornerBorder(renderer, &boundingBox, config, 0,
-										   config->color);
+					render_corner_border(renderer, &boundingBox, config, 0,
+										 config->color);
 				}
 
 				if (config->width.top > 0 & config->cornerRadius.topRight > 0) {
-					SDL_RenderCornerBorder(renderer, &boundingBox, config, 1,
-										   config->color);
+					render_corner_border(renderer, &boundingBox, config, 1,
+										 config->color);
 				}
 
 				if (config->width.bottom > 0 &
 					config->cornerRadius.bottomRight > 0) {
-					SDL_RenderCornerBorder(renderer, &boundingBox, config, 2,
-										   config->color);
+					render_corner_border(renderer, &boundingBox, config, 2,
+										 config->color);
 				}
 
 				if (config->width.bottom > 0 &
 					config->cornerRadius.bottomLeft > 0) {
-					SDL_RenderCornerBorder(renderer, &boundingBox, config, 3,
-										   config->color);
+					render_corner_border(renderer, &boundingBox, config, 3,
+										 config->color);
 				}
 			}
 

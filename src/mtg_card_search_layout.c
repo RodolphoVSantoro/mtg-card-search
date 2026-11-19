@@ -149,7 +149,7 @@ resize_rendering(void *userData, SDL_Event *event) {
 		int windowWidth = actualData->windowWidth;
 		int windowHeight = actualData->windowHeight;
 		SDL_Renderer *renderer = actualData->renderer;
-		SDL2_Font *fonts = actualData->fonts;
+		SDL2Font *fonts = actualData->fonts;
 
 		SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 		Clay_SetLayoutDimensions(
@@ -163,7 +163,7 @@ resize_rendering(void *userData, SDL_Event *event) {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		Clay_SDL2_Render(renderer, renderCommands, fonts);
+		clay_sdl2_render(renderer, renderCommands, fonts);
 
 		SDL_RenderPresent(renderer);
 	}

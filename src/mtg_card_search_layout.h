@@ -15,7 +15,7 @@ typedef struct {
 	float yOffset;
 	CardImagesVec *cardImages;
 	SDL_Renderer *renderer;
-	SDL2_Font *fonts;
+	SDL2Font *fonts;
 } ClayData;
 
 int
