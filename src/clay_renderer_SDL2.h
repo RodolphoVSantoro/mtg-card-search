@@ -3,9 +3,7 @@
 #include "clay.h"
 #include "sdl/SDL_ttf.h"
 
-#ifndef M_PI
-#define M_PI 3.14159
-#endif
+static constexpr double M_PI = 3.14159265358979323846;
 
 #define CLAY_COLOR_TO_SDL_COLOR_ARGS(color) color.r, color.g, color.b, color.a
 

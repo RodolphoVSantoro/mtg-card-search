@@ -9,19 +9,19 @@ apply_filter(CardFilter filter);
 static String
 generate_query(CardFilter filter) {
 	String sql = string_init();
-	int error = string_push_cstring(&sql, SQL_CARD_SELECT_WHERE);
+	int error = string_push_str(&sql, SQL_CARD_SELECT_WHERE);
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql card query\n");
 		exit(1);
 	}
 	String queryFilter = apply_filter(filter);
-	error = string_push_cstring(&sql, string_as_cstring(queryFilter));
+	error = string_push_str(&sql, string_as_cstring(queryFilter));
 	string_free(&queryFilter);
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql card query\n");
 		exit(1);
 	}
-	error = string_push_cstring(&sql, SQL_CARD_GROUP_BY);
+	error = string_push_str(&sql, SQL_CARD_GROUP_BY);
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql card query\n");
 		exit(1);
@@ -35,28 +35,28 @@ apply_and_filter(CardFilterAnd filter) {
 	if (filter.filtersSize <= 0) {
 		return query;
 	}
-	int error = string_push_cstring(&query, "( ");
+	int error = string_push_str(&query, "( ");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter '('\n");
 		exit(1);
 	}
 	for (int i = 0; i < filter.filtersSize; i++) {
 		String subQuery = apply_filter(filter.filters[i]);
-		error = string_push_cstring(&query, string_as_cstring(subQuery));
+		error = string_push_str(&query, string_as_cstring(subQuery));
 		if (error != 0) {
 			fprintf(stderr, "Failed to alloc sql and filter subquery\n");
 			exit(1);
 		}
 		string_free(&subQuery);
 		if (i < filter.filtersSize - 1) {
-			error = string_push_cstring(&query, " and ");
+			error = string_push_str(&query, " and ");
 			if (error != 0) {
 				fprintf(stderr, "Failed to alloc sql and filter 'and'\n");
 				exit(1);
 			}
 		}
 	}
-	error = string_push_cstring(&query, ") ");
+	error = string_push_str(&query, ") ");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter ')'\n");
 		exit(1);
@@ -70,26 +70,26 @@ apply_or_filter(CardFilterOr filter) {
 	if (filter.filtersSize <= 0) {
 		return query;
 	}
-	int error = string_push_cstring(&query, " ( ");
+	int error = string_push_str(&query, " ( ");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql or filter '('\n");
 		exit(1);
 	}
 	for (int i = 0; i < filter.filtersSize; i++) {
 		String subQuery = apply_filter(filter.filters[i]);
-		error = string_push_cstring(&query, string_as_cstring(subQuery));
+		error = string_push_str(&query, string_as_cstring(subQuery));
 		if (error != 0) {
 			fprintf(stderr, "Failed to alloc sql or filter subquery\n");
 			exit(1);
 		}
 		string_free(&subQuery);
-		error = string_push_cstring(&query, " or ");
+		error = string_push_str(&query, " or ");
 		if (error != 0) {
 			fprintf(stderr, "Failed to alloc sql or filter 'or'\n");
 			exit(1);
 		}
 	}
-	error = string_push_cstring(&query, " ) ");
+	error = string_push_str(&query, " ) ");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql or filter ')'\n");
 		exit(1);
@@ -100,19 +100,19 @@ apply_or_filter(CardFilterOr filter) {
 static String
 apply_not_filter(CardFilterNot filter) {
 	String query = string_init();
-	int error = string_push_cstring(&query, " not ( ");
+	int error = string_push_str(&query, " not ( ");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter '('\n");
 		exit(1);
 	}
 	String subQuery = apply_filter(filter.filter);
-	error = string_push_cstring(&query, string_as_cstring(subQuery));
+	error = string_push_str(&query, string_as_cstring(subQuery));
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter subquery\n");
 		exit(1);
 	}
 	string_free(&subQuery);
-	error = string_push_cstring(&query, " ) ");
+	error = string_push_str(&query, " ) ");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter ')'\n");
 		exit(1);
@@ -123,22 +123,22 @@ apply_not_filter(CardFilterNot filter) {
 static String
 apply_equal_filter(CardFilterEqual filter) {
 	String query = string_init();
-	int error = string_push_cstring(&query, filter.key);
+	int error = string_push_str(&query, filter.key);
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter subquery\n");
 		exit(1);
 	}
-	error = string_push_cstring(&query, " = '");
+	error = string_push_str(&query, " = '");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter ')'\n");
 		exit(1);
 	}
-	error = string_push_cstring(&query, filter.value);
+	error = string_push_str(&query, filter.value);
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter subquery\n");
 		exit(1);
 	}
-	error = string_push_cstring(&query, "' ");
+	error = string_push_str(&query, "' ");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter ')'\n");
 		exit(1);
@@ -149,34 +149,34 @@ apply_equal_filter(CardFilterEqual filter) {
 static String
 apply_like_filter(CardFilterLike filter) {
 	String query = string_init();
-	int error = string_push_cstring(&query, " lower(");
+	int error = string_push_str(&query, " lower(");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter subquery\n");
 		exit(1);
 	}
-	error = string_push_cstring(&query, filter.key);
+	error = string_push_str(&query, filter.key);
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter subquery\n");
 		exit(1);
 	}
-	error = string_push_cstring(&query, ") ");
+	error = string_push_str(&query, ") ");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter subquery\n");
 		exit(1);
 	}
-	error = string_push_cstring(&query, " like '%");
+	error = string_push_str(&query, " like '%");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter ')'\n");
 		exit(1);
 	}
-	char *valueToLower = cstring_to_lower(filter.value);
-	error = string_push_cstring(&query, valueToLower);
+	char *valueToLower = str_to_lower(filter.value);
+	error = string_push_str(&query, valueToLower);
 	free(valueToLower);
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter subquery\n");
 		exit(1);
 	}
-	error = string_push_cstring(&query, "%' ");
+	error = string_push_str(&query, "%' ");
 	if (error != 0) {
 		fprintf(stderr, "Failed to alloc sql and filter ')'\n");
 		exit(1);
@@ -234,7 +234,7 @@ get_scryfall_ids(sqlite3 *cardDb, CardFilter filter, CStringVec *ids) {
 	while ((error = sqlite3_step(stmt)) == SQLITE_ROW) {
 		String cardScryfallId = string_init();
 		char *cardScryfallIdStr = (char *)sqlite3_column_text(stmt, 0);
-		error = string_push_cstring(&cardScryfallId, cardScryfallIdStr);
+		error = string_push_str(&cardScryfallId, cardScryfallIdStr);
 		if (error != 0) {
 			string_free(&cardScryfallId);
 			break;

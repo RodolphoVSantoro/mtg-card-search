@@ -12,27 +12,27 @@
 
 static int
 build_query(String *sql, CStringVec strs) {
-	int error = string_push_cstring(sql, SQL_IMAGE_SELECT);
+	int error = string_push_str(sql, SQL_IMAGE_SELECT);
 	return_if_string_error(result, sql);
 
-	error = string_push_cstring(sql, SQL_IMAGE_START_WHERE);
+	error = string_push_str(sql, SQL_IMAGE_START_WHERE);
 	return_if_string_error(result, sql);
 
 	for (int i = 0; i < strs.size; i++) {
-		error = string_push_cstring(sql, "'");
+		error = string_push_str(sql, "'");
 		return_if_string_error(result, sql);
 
-		error = string_push_cstring(sql, strs.strings[i]);
+		error = string_push_str(sql, strs.strings[i]);
 		return_if_string_error(result, sql);
 
-		error = string_push_cstring(sql, "'");
+		error = string_push_str(sql, "'");
 		return_if_string_error(result, sql);
 		if (i < strs.size - 1) {
-			error = string_push_cstring(sql, ", ");
+			error = string_push_str(sql, ", ");
 			return_if_string_error(result, sql);
 		}
 	}
-	error = string_push_cstring(sql, SQL_IMAGE_CLOSE_WHERE);
+	error = string_push_str(sql, SQL_IMAGE_CLOSE_WHERE);
 	return_if_string_error(result, sql);
 	return 0;
 }
@@ -147,22 +147,17 @@ get_card_blobs_by_id(SDL_Renderer *renderer, sqlite3 *imageDb,
 	*cardImages = card_images_vec_init();
 	while ((error = sqlite3_step(stmt)) == SQLITE_ROW) {
 		char *cardFaceStr = (char *)sqlite3_column_text(stmt, 0);
-		CardFace cardFace = card_face_from_cstring(cardFaceStr);
+		CardFace cardFace = str_as_card_face(cardFaceStr);
 		char *cardScryfallIdStr = (char *)sqlite3_column_text(stmt, 1);
-		error = string_push_cstring(&cardScryfallId, cardScryfallIdStr);
+		error = string_push_str(&cardScryfallId, cardScryfallIdStr);
 		if (error != 0) {
 			break;
 		}
 		const uint8_t *blob_data = sqlite3_column_blob(stmt, 2);
 		int blob_size = sqlite3_column_bytes(stmt, 2);
-		// blob_data_sdl = (uint8_t *)malloc(blob_size * sizeof(uint8_t));
-		// blob_size_sdl = blob_size;
-		// memcpy(blob_data_sdl, blob_data, blob_size);
 		SDL_Texture *cardImage =
 			create_surface_from_avif(renderer, blob_data, blob_size);
 		free(blob_data_sdl);
-		// printf("Card face %s(%d), Card scryfallId: %s | img Size: %d
-		// bytes\n", cardFaceStr, cardFace, cardScryfallIdStr, blob_size);
 		card_images_vec_push(cardImages, cardImage, cardScryfallId, cardFace);
 		string_reset(&cardScryfallId);
 	}

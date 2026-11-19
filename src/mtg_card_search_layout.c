@@ -2,21 +2,11 @@
 
 #include <math.h>
 
-Clay_Color COLOR_WHITE = {255, 255, 255, 255};
+static constexpr Clay_Color COLOR_WHITE = {255, 255, 255, 255};
 
 void
-HandleClayErrors(Clay_ErrorData errorData) {
+handle_clay_errors(Clay_ErrorData errorData) {
 	printf("%s", errorData.errorText.chars);
-}
-
-ClayData
-CardSearchInitialize(CardImagesVec *cardImages, int *windowHeight,
-					 int *windowWidth) {
-	ClayData userData = {.windowHeight = windowHeight,
-						 .windowWidth = windowWidth,
-						 .cardImages = cardImages};
-
-	return userData;
 }
 
 static int
@@ -25,10 +15,10 @@ apply_proportion(float size, float proportion) {
 }
 
 Clay_RenderCommandArray
-ClayVideoDemo_CreateLayout(ClayData *userData) {
+mtg_card_search_create_layout(ClayData *clayData) {
 	// default size w: 1920, h: 1006
-	float widthProportion = ((float)(*(userData->windowWidth))) / 1920.0f;
-	float heightProportion = ((float)(*(userData->windowHeight))) / 1006.0f;
+	float widthProportion = ((float)(clayData->windowWidth)) / 1920.0f;
+	float heightProportion = ((float)(clayData->windowHeight)) / 1006.0f;
 
 	Clay_BeginLayout();
 
@@ -68,7 +58,7 @@ ClayVideoDemo_CreateLayout(ClayData *userData) {
 						 .textColor = {255, 255, 255, 255}}));
 			}
 
-			int totalItems = userData->cardImages->size;
+			int totalItems = clayData->cardImages->size;
 
 			// 4:3 ratio for card size
 			float baseCardWidth = 375.f;
@@ -126,7 +116,7 @@ ClayVideoDemo_CreateLayout(ClayData *userData) {
 										  8.0f, widthProportion))}) {
 								CLAY_AUTO_ID({
 									.image =
-										userData->cardImages->cardsImages[i]
+										clayData->cardImages->cardsImages[i]
 											.faces[CARD_FACE_FRONT],
 									.layout = {.sizing =
 												   {
@@ -145,20 +135,19 @@ ClayVideoDemo_CreateLayout(ClayData *userData) {
 	Clay_RenderCommandArray renderCommands = Clay_EndLayout(0);
 	for (int32_t i = 0; i < renderCommands.length; i++) {
 		Clay_RenderCommandArray_Get(&renderCommands, i)->boundingBox.y +=
-			userData->yOffset;
+			clayData->yOffset;
 	}
 	return renderCommands;
 }
 
 int
-resizeRendering(void *userData, SDL_Event *event) {
-	ResizeRenderData *actualData = userData;
+resize_rendering(void *userData, SDL_Event *event) {
+	ClayData *actualData = userData;
 	if (event->type == SDL_WINDOWEVENT &&
 		event->window.event == SDL_WINDOWEVENT_EXPOSED) {
 		SDL_Window *window = actualData->window;
-		int windowWidth = *(actualData->windowWidth);
-		int windowHeight = *(actualData->windowHeight);
-		ClayData demoData = actualData->demoData;
+		int windowWidth = actualData->windowWidth;
+		int windowHeight = actualData->windowHeight;
 		SDL_Renderer *renderer = actualData->renderer;
 		SDL2_Font *fonts = actualData->fonts;
 
@@ -166,11 +155,11 @@ resizeRendering(void *userData, SDL_Event *event) {
 		Clay_SetLayoutDimensions(
 			(Clay_Dimensions){(float)windowWidth, (float)windowHeight});
 
-		*(actualData->windowWidth) = windowWidth;
-		*(actualData->windowHeight) = windowHeight;
+		actualData->windowWidth = windowWidth;
+		actualData->windowHeight = windowHeight;
 
 		Clay_RenderCommandArray renderCommands =
-			ClayVideoDemo_CreateLayout(&demoData);
+			mtg_card_search_create_layout(actualData);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 

@@ -4,31 +4,23 @@
 #include "clay_renderer_SDL2.h"
 #include "collections.h"
 
-#define FONT_ID_BODY_16 0
+static constexpr int CLAY_FONT_AMOUNT = 1;
+static constexpr int CLAY_FONT_SIZE = 16;
+static constexpr int FONT_ID_BODY_16 = 0;
 
 typedef struct {
+	SDL_Window *window;
+	int windowWidth;
+	int windowHeight;
 	float yOffset;
 	CardImagesVec *cardImages;
-	int *windowWidth;
-	int *windowHeight;
-} ClayData;
-
-struct ResizeRenderData_ {
-	SDL_Window *window;
-	int *windowWidth;
-	int *windowHeight;
-	ClayData demoData;
 	SDL_Renderer *renderer;
 	SDL2_Font *fonts;
-};
-typedef struct ResizeRenderData_ ResizeRenderData;
+} ClayData;
 
-ClayData
-CardSearchInitialize(CardImagesVec *cardImages, int *windowHeight,
-					 int *windowWidth);
 int
-resizeRendering(void *userData, SDL_Event *event);
+resize_rendering(void *userData, SDL_Event *event);
 Clay_RenderCommandArray
-ClayVideoDemo_CreateLayout(ClayData *userData);
+mtg_card_search_create_layout(ClayData *userData);
 void
-HandleClayErrors(Clay_ErrorData errorData);
+handle_clay_errors(Clay_ErrorData errorData);

@@ -7,17 +7,14 @@
 
 const char *
 card_face_as_str(CardFace cardFace) {
-	if (cardFace == CARD_FACE_FRONT) {
-		return CARD_FACE_FRONT_STR;
+	if (card_face_validate(cardFace)) {
+		return CARD_FACES_STR[cardFace];
 	}
-	if (cardFace == CARD_FACE_BACK) {
-		return CARD_FACE_BACK_STR;
-	}
-	return CARD_FACE_UNKNOWN_STR;
+	return CARD_FACES_STR[CARD_FACE_UNKNOWN];
 }
 
 CardFace
-card_face_from_cstring(const char *cardFaceStr) {
+str_as_card_face(const char *cardFaceStr) {
 	if (strncmp("front", cardFaceStr, 5) == 0) {
 		return CARD_FACE_FRONT;
 	}
@@ -119,7 +116,7 @@ cstring_vec_init() {
 }
 
 char *
-cstring_to_lower(char *str) {
+str_to_lower(const char *str) {
 	int strLen = strlen(str);
 	char *newStr = (char *)malloc(sizeof(char) * (strLen + 1));
 	for (int i = 0; str[i] != '\0'; i++) {
@@ -127,14 +124,6 @@ cstring_to_lower(char *str) {
 	}
 	newStr[strLen] = '\0';
 	return newStr;
-}
-
-char *
-_cstring_from_str(char *str) {
-	int size = strlen(str);
-	char *cstring = (char *)malloc(sizeof(char) * (size + 1));
-	strcpy(cstring, str);
-	return cstring;
 }
 
 int
@@ -185,7 +174,7 @@ string_push_char(String *string, char cChar) {
 }
 
 int
-string_push_cstring(String *string, char *cstring) {
+string_push_str(String *string, const char *cstring) {
 	int cstringSize = strlen(cstring);
 	if (cstringSize + string->size >= string->capacity) {
 		string->capacity = (cstringSize + string->size) * 2;

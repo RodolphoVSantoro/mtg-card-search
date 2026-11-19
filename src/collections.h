@@ -2,12 +2,11 @@
 #include "sdl/SDL_render.h"
 #include <stdbool.h>
 
-#define STRING_INITIAL_SIZE 128
+static constexpr int STRING_INITIAL_SIZE = 256;
+static constexpr int CARD_NOT_FOUND = -1;
 
 #define realloc_raw_array(ptr, capacity)                                       \
 	(typeof(ptr))realloc((ptr), sizeof(*(ptr)) * (capacity))
-
-#define CARD_NOT_FOUND -1
 
 #define return_if_string_error(result, string_ref)                             \
 	do                                                                         \
@@ -16,6 +15,8 @@
 			return error;                                                      \
 		}                                                                      \
 	while (0)
+
+#define str_to_cstring(str) strdup("" str "")
 
 typedef struct {
 	char **strings;
@@ -29,14 +30,16 @@ typedef struct {
 	int capacity;
 } String;
 
-static const char *CARD_FACE_FRONT_STR = "front";
-static const char *CARD_FACE_BACK_STR = "back";
-static const char *CARD_FACE_UNKNOWN_STR = "unknown";
+static constexpr char CARD_FACES_STR[3][8] = {
+	"front",
+	"back",
+	"unknown",
+};
 
 typedef enum {
-	CARD_FACE_UNKNOWN = -1,
 	CARD_FACE_FRONT = 0,
 	CARD_FACE_BACK = 1,
+	CARD_FACE_UNKNOWN = 2,
 } CardFace;
 
 typedef struct {
@@ -51,12 +54,10 @@ typedef struct {
 	int capacity;
 } CardImagesVec;
 
-#define cstring_from_str(str) _cstring_from_str("" str "")
-
 const char *
 card_face_as_str(CardFace cardFace);
 CardFace
-card_face_from_cstring(const char *cardFaceStr);
+str_as_card_face(const char *cardFaceStr);
 CardImages
 card_images_init(String cardId);
 bool
@@ -73,9 +74,7 @@ card_images_vec_free(CardImagesVec *vec);
 CStringVec
 cstring_vec_init();
 char *
-_cstring_from_str(char *str);
-char *
-cstring_to_lower(char *str);
+str_to_lower(const char *str);
 int
 cstring_vec_push(CStringVec *vec, char *string);
 void
@@ -83,7 +82,7 @@ cstring_vec_free(CStringVec *vec);
 String
 string_init();
 int
-string_push_cstring(String *string, char *cstring);
+string_push_str(String *string, const char *cstring);
 int
 string_push_char(String *string, char cChar);
 char *

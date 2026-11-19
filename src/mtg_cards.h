@@ -4,12 +4,12 @@
 
 #include <sqlite3.h>
 
-#define SQL_CARD_SELECT_WHERE                                                  \
-	"select ci.scryfallId from cards ca "                                      \
-	"join cardIdentifiers ci on ci.uuid = ca.uuid "                            \
-	"where "
+static constexpr char SQL_CARD_SELECT_WHERE[] =
+	"select ci.scryfallId from cards ca "
+	"join cardIdentifiers ci on ci.uuid = ca.uuid "
+	"where ";
 
-#define SQL_CARD_GROUP_BY " group by ca.name"
+static constexpr char SQL_CARD_GROUP_BY[] = " group by ca.name";
 
 typedef enum {
 	CARD_FILTER_AND,
