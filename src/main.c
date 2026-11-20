@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "clay_renderer_SDL2.h"
 #include "sdl/SDL.h"
@@ -43,10 +44,6 @@ event_loop(SDL_Renderer *renderer, SDL_Window *window,
 		   SDL2Font fonts[CLAY_FONT_AMOUNT], ClayData *clayData);
 
 int
-card_search(sqlite3 *cardDb, sqlite3 *imageDb, SDL_Renderer *renderer,
-			CardFilter *filter, CardImagesVec *cardImages);
-
-int
 main(int argc, char *argv[]) {
 	int mainResult = MAIN_SUCCESS;
 
@@ -61,6 +58,10 @@ main(int argc, char *argv[]) {
 	fonts[FONT_ID_BODY_16].fontId = FONT_ID_BODY_16;
 	fonts[FONT_ID_BODY_16].font = nullptr;
 
+	CardFilter cardFilter = card_filter_create_group(CARD_FILTER_AND);
+
+	ClayData clayData = {.queryBuffer = nullptr};
+
 	mainResult = sqlite_init(&imageDb, &cardDb);
 	if (mainResult != 0) {
 		goto quit;
@@ -73,23 +74,40 @@ main(int argc, char *argv[]) {
 
 	// create mock filter for now
 	// TODO: get from UI
-	CardFilterEqual equal = {.key = "manaValue", .value = "3"};
-	CardFilterLike like = {.key = "name", .value = "phoenix"};
-	CardFilter filters[2] = {
-		{.type = CARD_FILTER_EQUAL, .filter = {.equalFilter = &equal}},
-		{.type = CARD_FILTER_LIKE, .filter = {.likeFilter = &like}}};
-	CardFilterAnd filterAnd =
-		(CardFilterAnd){.filtersSize = 2, .filters = filters};
-	CardFilter filter =
-		(CardFilter){.type = CARD_FILTER_AND, .filter = &filterAnd};
+	// CardFilterEqual equal = {.key = "manaValue", .value = "3"};
+	// CardFilterLike like = {.key = "name", .value = "phoenix"};
+	// CardFilter filters[2] = {
+	// 	{.type = CARD_FILTER_EQUAL, .filter = {.equalFilter = &equal}},
+	// 	{.type = CARD_FILTER_LIKE, .filter = {.likeFilter = &like}}};
+	// CardFilterAnd filterAnd =
+	// 	(CardFilterAnd){.filtersSize = 2, .filters = filters};
+	// CardFilter filter =
+	// 	(CardFilter){.type = CARD_FILTER_AND, .filter = &filterAnd};
 
-	card_search(cardDb, imageDb, renderer, &filter, &cardImages);
+	// card_search(cardDb, imageDb, renderer, &filter, &cardImages);
 
-	ClayData clayData = clay_init(renderer, window, fonts, &cardImages);
+	clayData = clay_init(renderer, window, fonts, &cardImages);
+
+	clayData.cardFilter = &cardFilter;
+	FilterUIState filterState = {
+		.treeDirty = false,
+		.activeEditNode = &cardFilter,
+		.rootFilter = cardFilter,
+		.editingValue = false,
+		.pendingAction = FILTER_ACTION_NONE,
+	};
+	clayData.filterUIState = &filterState;
+	clayData.imageDb = imageDb;
+	clayData.cardDb = cardDb;
+
 	mainResult = event_loop(renderer, window, fonts, &clayData);
 
 quit:
 	card_images_vec_free(&cardImages);
+	card_filter_free_contents(&cardFilter);
+	if (clayData.queryBuffer != nullptr) {
+		free(clayData.queryBuffer);
+	}
 	if (imageDb != nullptr) {
 		sqlite3_close(imageDb);
 		imageDb = nullptr;
@@ -200,14 +218,20 @@ clay_init(SDL_Renderer *renderer, SDL_Window *window,
 					(Clay_ErrorHandler){handle_clay_errors, NULL});
 	Clay_SetMeasureTextFunction(measure_text, fonts);
 
-	ClayData userData = {
-		.window = window,
-		.windowWidth = windowWidth,
-		.windowHeight = windowHeight,
-		.cardImages = cardImages,
-		.renderer = renderer,
-		.fonts = fonts,
-	};
+	char *queryBuffer = (char *)malloc(sizeof(char) * MAX_QUERY_LEN);
+	memset(queryBuffer, '\0', MAX_QUERY_LEN - 1);
+
+	ClayData userData = {.window = window,
+						 .windowWidth = windowWidth,
+						 .windowHeight = windowHeight,
+						 .cardImages = cardImages,
+						 .renderer = renderer,
+						 .fonts = fonts,
+						 .queryBuffer = queryBuffer,
+						 .queryLen = 0,
+						 .queryFocused = false,
+						 .sliderValue = 0.5,
+						 .draggingSlider = false};
 
 	return userData;
 }
@@ -230,6 +254,39 @@ event_loop(SDL_Renderer *renderer, SDL_Window *window, SDL2Font *fonts,
 		Clay_Vector2 scrollDelta = {};
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
+			if (clayData->filterUIState->activeEditNode != NULL) {
+				char **targetStr = NULL;
+				if (clayData->filterUIState->activeEditNode->type ==
+					CARD_FILTER_EQUAL) {
+					targetStr = &clayData->filterUIState->activeEditNode->filter
+									 .equalFilter->value;
+				} else if (clayData->filterUIState->activeEditNode->type ==
+						   CARD_FILTER_LIKE) {
+					targetStr = &clayData->filterUIState->activeEditNode->filter
+									 .likeFilter->value;
+				}
+
+				if (targetStr != NULL) {
+					if (event.type == SDL_TEXTINPUT) {
+						size_t oldLen = strlen(*targetStr);
+						size_t addLen = strlen(event.text.text);
+						*targetStr = realloc(*targetStr, oldLen + addLen + 1);
+						strcat(*targetStr, event.text.text);
+						clayData->filterUIState->treeDirty = true;
+					} else if (event.type == SDL_KEYDOWN &&
+							   event.key.keysym.sym == SDLK_BACKSPACE) {
+						size_t len = strlen(*targetStr);
+						if (len > 0) {
+							(*targetStr)[len - 1] = '\0';
+							clayData->filterUIState->treeDirty = true;
+						}
+					} else if (event.type == SDL_KEYDOWN &&
+							   event.key.keysym.sym == SDLK_RETURN) {
+						clayData->filterUIState->activeEditNode =
+							NULL; // Commit/unfocus on Enter
+					}
+				}
+			}
 			switch (event.type) {
 			case SDL_WINDOWEVENT:
 				if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
@@ -244,6 +301,42 @@ event_loop(SDL_Renderer *renderer, SDL_Window *window, SDL2Font *fonts,
 				scrollDelta.x = event.wheel.x * 10;
 				scrollDelta.y = event.wheel.y * 10;
 				break;
+			case SDL_MOUSEMOTION:
+				clayData->mouseX = (float)event.motion.x;
+				clayData->mouseY = (float)event.motion.y - clayData->yOffset;
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (event.button.button == SDL_BUTTON_LEFT) {
+					clayData->mouseDown = true;
+					clayData->mouseClicked = true;
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				if (event.button.button == SDL_BUTTON_LEFT) {
+					clayData->mouseDown = false;
+				}
+				break;
+			case SDL_TEXTINPUT:
+				if (clayData->queryFocused) {
+					size_t addLen = strlen(event.text.text);
+					if (clayData->queryLen + addLen < MAX_QUERY_LEN - 1) {
+						memcpy(clayData->queryBuffer + clayData->queryLen,
+							   event.text.text, addLen);
+						clayData->queryLen += (int)addLen;
+						clayData->queryBuffer[clayData->queryLen] = '\0';
+					}
+				}
+				break;
+			case SDL_KEYDOWN:
+				if (clayData->queryFocused &&
+					event.key.keysym.sym == SDLK_BACKSPACE &&
+					clayData->queryLen > 0) {
+					clayData->queryLen--;
+					clayData->queryBuffer[clayData->queryLen] = '\0';
+				}
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -254,8 +347,11 @@ event_loop(SDL_Renderer *renderer, SDL_Window *window, SDL2Font *fonts,
 			(Clay_Vector2){(float)mouseX, (float)mouseY};
 		Clay_SetPointerState(mousePosition, mouseState & SDL_BUTTON(1));
 
+		Clay_SetPointerState((Clay_Vector2){clayData->mouseX, clayData->mouseY},
+							 clayData->mouseDown);
+
 		Clay_UpdateScrollContainers(
-			true, (Clay_Vector2){scrollDelta.x, scrollDelta.y}, deltaTime);
+			false, (Clay_Vector2){scrollDelta.x, scrollDelta.y}, deltaTime);
 
 		SDL_GetWindowSize(window, &clayData->windowWidth,
 						  &clayData->windowHeight);
@@ -283,24 +379,10 @@ event_loop(SDL_Renderer *renderer, SDL_Window *window, SDL2Font *fonts,
 		if (frame_time < FRAME_TARGET_TIME) {
 			SDL_Delay(FRAME_TARGET_TIME - frame_time);
 		}
+
+		apply_pending_filter_action(clayData->filterUIState);
+		// Reset mouse clicked at the end of the frame
+		clayData->mouseClicked = false;
 	}
 	return result;
-}
-
-int
-card_search(sqlite3 *cardDb, sqlite3 *imageDb, SDL_Renderer *renderer,
-			CardFilter *filter, CardImagesVec *cardImages) {
-	CStringVec scryfallIds = cstring_vec_init();
-
-	int mainResult = get_scryfall_ids(cardDb, *filter, &scryfallIds);
-	if (mainResult != 0) {
-		fprintf(stderr, "Failed to get scryfall ids: %d\n", mainResult);
-		cstring_vec_free(&scryfallIds);
-		return mainResult;
-	}
-
-	mainResult =
-		get_card_blobs_by_id(renderer, imageDb, cardImages, scryfallIds);
-	cstring_vec_free(&scryfallIds);
-	return mainResult;
 }

@@ -83,10 +83,12 @@ apply_or_filter(CardFilterOr filter) {
 			exit(1);
 		}
 		string_free(&subQuery);
-		error = string_push_str(&query, " or ");
-		if (error != 0) {
-			fprintf(stderr, "Failed to alloc sql or filter 'or'\n");
-			exit(1);
+		if (i < filter.filtersSize - 1) {
+			error = string_push_str(&query, " or ");
+			if (error != 0) {
+				fprintf(stderr, "Failed to alloc sql or filter 'or'\n");
+				exit(1);
+			}
 		}
 	}
 	error = string_push_str(&query, " ) ");
@@ -254,4 +256,144 @@ get_scryfall_ids(sqlite3 *cardDb, CardFilter filter, CStringVec *ids) {
 	string_free(&sql);
 	sqlite3_finalize(stmt);
 	return 0;
+}
+
+CardFilter
+card_filter_create_leaf(CardFilterType type, const char *key, const char *val) {
+	CardFilter f = {.type = type};
+	if (type == CARD_FILTER_EQUAL) {
+		f.filter.equalFilter = malloc(sizeof(CardFilterEqual));
+		f.filter.equalFilter->key = strdup(key);
+		f.filter.equalFilter->value = strdup(val);
+	} else if (type == CARD_FILTER_LIKE) {
+		f.filter.likeFilter = malloc(sizeof(CardFilterLike));
+		f.filter.likeFilter->key = strdup(key);
+		f.filter.likeFilter->value = strdup(val);
+	}
+	return f;
+}
+
+CardFilter
+card_filter_create_group(CardFilterType type) {
+	CardFilter f = {.type = type};
+	if (type == CARD_FILTER_AND) {
+		f.filter.andFilter = malloc(sizeof(CardFilterAnd));
+		f.filter.andFilter->filterCapacity = 4;
+		f.filter.andFilter->filtersSize = 0;
+		f.filter.andFilter->filters = malloc(sizeof(CardFilter) * 4);
+	} else if (type == CARD_FILTER_OR) {
+		f.filter.orFilter = malloc(sizeof(CardFilterOr));
+		f.filter.orFilter->filterCapacity = 4;
+		f.filter.orFilter->filtersSize = 0;
+		f.filter.orFilter->filters = malloc(sizeof(CardFilter) * 4);
+	} else if (type == CARD_FILTER_NOT) {
+		f.filter.notFilter = malloc(sizeof(CardFilterNot));
+		f.filter.notFilter->filter =
+			card_filter_create_leaf(CARD_FILTER_LIKE, "name", "");
+	}
+	return f;
+}
+
+void
+card_filter_free_contents(CardFilter *filter) {
+	if (!filter) {
+		return;
+	}
+	switch (filter->type) {
+	case CARD_FILTER_EQUAL:
+		free(filter->filter.equalFilter->key);
+		free(filter->filter.equalFilter->value);
+		free(filter->filter.equalFilter);
+		break;
+	case CARD_FILTER_LIKE:
+		free(filter->filter.likeFilter->key);
+		free(filter->filter.likeFilter->value);
+		free(filter->filter.likeFilter);
+		break;
+	case CARD_FILTER_NOT:
+		card_filter_free_contents(&filter->filter.notFilter->filter);
+		free(filter->filter.notFilter);
+		break;
+	case CARD_FILTER_AND:
+		for (int i = 0; i < filter->filter.andFilter->filtersSize; i++) {
+			card_filter_free_contents(&filter->filter.andFilter->filters[i]);
+		}
+		free(filter->filter.andFilter->filters);
+		free(filter->filter.andFilter);
+		break;
+	case CARD_FILTER_OR:
+		for (int i = 0; i < filter->filter.orFilter->filtersSize; i++) {
+			card_filter_free_contents(&filter->filter.orFilter->filters[i]);
+		}
+		free(filter->filter.orFilter->filters);
+		free(filter->filter.orFilter);
+		break;
+	}
+}
+
+void
+card_filter_group_add(CardFilter *group, CardFilter newChild) {
+	CardFilter **filters = NULL;
+	int *size = NULL;
+	int *capacity = NULL;
+
+	if (group->type == CARD_FILTER_AND) {
+		filters = &group->filter.andFilter->filters;
+		size = &group->filter.andFilter->filtersSize;
+		capacity = &group->filter.andFilter->filterCapacity;
+	} else if (group->type == CARD_FILTER_OR) {
+		filters = &group->filter.orFilter->filters;
+		size = &group->filter.orFilter->filtersSize;
+		capacity = &group->filter.orFilter->filterCapacity;
+	} else {
+		return;
+	}
+
+	if (*size >= *capacity) {
+		*capacity *= 2;
+		*filters = realloc(*filters, sizeof(CardFilter) * (*capacity));
+	}
+	(*filters)[*size] = newChild;
+	(*size)++;
+}
+
+void
+card_filter_group_remove_at(CardFilter *group, int removeIdx) {
+	printf("removing %d from %lx\n", removeIdx, (long int)group);
+	CardFilter *arr = NULL;
+	int *size = NULL;
+
+	if (group->type == CARD_FILTER_AND) {
+		arr = group->filter.andFilter->filters;
+		size = &group->filter.andFilter->filtersSize;
+	} else if (group->type == CARD_FILTER_OR) {
+		arr = group->filter.orFilter->filters;
+		size = &group->filter.orFilter->filtersSize;
+	} else {
+		return;
+	}
+
+	if (removeIdx < 0 || removeIdx >= *size) {
+		return;
+	}
+
+	printf("removeIdx: %d from %d with size %d\n", removeIdx, group->type,
+		   *size);
+	card_filter_free_contents(&arr[removeIdx]);
+	// Shift remaining elements left
+	for (int i = removeIdx; i < *size - 1; i++) {
+		printf("shifting %d to %d\n", i, i + 1);
+		arr[i] = arr[i + 1];
+	}
+	(*size)--;
+}
+
+const char *
+get_sql_column_for_key(const char *uiKey) {
+	for (size_t i = 0; i < VALID_FILTER_KEYS_COUNT; i++) {
+		if (strcmp(VALID_FILTER_KEYS[i].uiKey, uiKey) == 0) {
+			return VALID_FILTER_KEYS[i].sqlColumn;
+		}
+	}
+	return VALID_FILTER_KEYS[0].sqlColumn;
 }
